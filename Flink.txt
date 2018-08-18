@@ -1,0 +1,243 @@
+Batch vs Stream
+
+Bounded data set                        Unbounded/Infinite
+Generae Periodic report                 Continuous real-time processing, process and react
+Order of data received unimportant      Order important, track out of order arrival
+Single global state of the world        No global state, only history of events
+
+
+Requirement of Stream processing:
+1) High throughput, Low latency
+2) Fault tolerance with low overhead
+3) Manage out of order events
+4) replay stream if necessary, at least from some checkpoint.
+
+
+StateLess Transformation: map, flatMap, filter
+StateFul ops: reduce and sum
+
+
+Tumbling Window: Fix size, non-overlapping
+Sliding Window: Fix Size, over-lapping - two parameter window size, sliding window
+Session Window: A new window is started when a between the entities reaches
+the specified value.
+
+NonKeyed : window defined over the whole stream. One output entity per window.
+KeyedWindow: Window applied on each group in keyed stream. One output entity per key per window.
+
+
+Custom Window:
+Window Assigner, Current Window, Evictor, Evaluation Function
+
+
+
+
+
+
+
+
+
+=================
+start the netcat using
+ncat -vv -l 0.0.0.0 9000
+sudo apt-get update mavan
+
+//        twitterProps.setProperty(TwitterSource.CONSUMER_KEY, "0tzq7zKCnOAdQPou7QYHywgji");
+//        twitterProps.setProperty(TwitterSource.CONSUMER_SECRET, "jeQThXxSTbLohLXEEIy8H31uFKFWYcITMfUjTuD0aWjreegCiR");
+//        twitterProps.setProperty(TwitterSource.TOKEN, "1008815004580130816-zkcZ6wJwfFcJD1f7Iai0KUua7XLz00");
+//        twitterProps.setProperty(TwitterSource.TOKEN_SECRET, "eEmTWJ7hLFLkSGrUj7Pmm48LLWrwX12UCJB7I6kRDsoYP");
+{
+	"created_at": "Thu Jun 21 06:13:26 +0000 2018",
+	"id": 1009680675518210048,
+	"id_str": "1009680675518210048",
+	"text": "This is wanderlust for all the food travellers out there; happy eating #fullcupliving \u2615\ufe0f https:\/\/t.co\/4XDA8xsJY9",
+	"display_text_range": [0,
+	88],
+	"source": "\u003ca href=\"http:\/\/twitter.com\/download\/iphone\" rel=\"nofollow\"\u003eTwitter for iPhone\u003c\/a\u003e",
+	"truncated": false,
+	"in_reply_to_status_id": null,
+	"in_reply_to_status_id_str": null,
+	"in_reply_to_user_id": null,
+	"in_reply_to_user_id_str": null,
+	"in_reply_to_screen_name": null,
+	"user": {
+		"id": 1000692913926496258,
+		"id_str": "1000692913926496258",
+		"name": "dandylionliving",
+		"screen_name": "dandylionliving",
+		"location": "London & Kent",
+		"url": null,
+		"description": "Living completely; Lifestyle & Living. Instagram dandylionliving",
+		"translator_type": "none",
+		"protected": false,
+		"verified": false,
+		"followers_count": 96,
+		"friends_count": 859,
+		"listed_count": 0,
+		"favourites_count": 108,
+		"statuses_count": 71,
+		"created_at": "Sun May 27 10:59:17 +0000 2018",
+		"utc_offset": null,
+		"time_zone": null,
+		"geo_enabled": false,
+		"lang": "en",
+		"contributors_enabled": false,
+		"is_translator": false,
+		"profile_background_color": "F5F8FA",
+		"profile_background_image_url": "",
+		"profile_background_image_url_https": "",
+		"profile_background_tile": false,
+		"profile_link_color": "1DA1F2",
+		"profile_sidebar_border_color": "C0DEED",
+		"profile_sidebar_fill_color": "DDEEF6",
+		"profile_text_color": "333333",
+		"profile_use_background_image": true,
+		"profile_image_url": "http:\/\/pbs.twimg.com\/profile_images\/1000757628828602368\/bY0yAmK8_normal.jpg",
+		"profile_image_url_https": "https:\/\/pbs.twimg.com\/profile_images\/1000757628828602368\/bY0yAmK8_normal.jpg",
+		"profile_banner_url": "https:\/\/pbs.twimg.com\/profile_banners\/1000692913926496258\/1527434975",
+		"default_profile": true,
+		"default_profile_image": false,
+		"following": null,
+		"follow_request_sent": null,
+		"notifications": null
+	},
+	"geo": null,
+	"coordinates": null,
+	"place": null,
+	"contributors": null,
+	"quoted_status_id": 1009639798028603392,
+	"quoted_status_id_str": "1009639798028603392",
+	"quoted_status": {
+		"created_at": "Thu Jun 21 03:31:00 +0000 2018",
+		"id": 1009639798028603392,
+		"id_str": "1009639798028603392",
+		"text": "Osteria Francescana in Modena, Italy, is the brand new No.1 in The World's 50 Best Restaurants 2018! Discover the f\u2026 https:\/\/t.co\/0TQhUhfcMv",
+		"source": "\u003ca href=\"https:\/\/sproutsocial.com\" rel=\"nofollow\"\u003eSprout Social\u003c\/a\u003e",
+		"truncated": true,
+		"in_reply_to_status_id": null,
+		"in_reply_to_status_id_str": null,
+		"in_reply_to_user_id": null,
+		"in_reply_to_user_id_str": null,
+		"in_reply_to_screen_name": null,
+		"user": {
+			"id": 21295141,
+			"id_str": "21295141",
+			"name": "The World's 50 Best",
+			"screen_name": "TheWorlds50Best",
+			"location": null,
+			"url": "http:\/\/www.theworlds50best.com\/blog\/",
+			"description": "Latest news from #Worlds50Best #Asias50Best and #LatAm50Best",
+			"translator_type": "none",
+			"protected": false,
+			"verified": true,
+			"followers_count": 112485,
+			"friends_count": 2217,
+			"listed_count": 1308,
+			"favourites_count": 9304,
+			"statuses_count": 10958,
+			"created_at": "Thu Feb 19 12:50:30 +0000 2009",
+			"utc_offset": null,
+			"time_zone": null,
+			"geo_enabled": true,
+			"lang": "en",
+			"contributors_enabled": false,
+			"is_translator": false,
+			"profile_background_color": "1A1B1F",
+			"profile_background_image_url": "http:\/\/abs.twimg.com\/images\/themes\/theme9\/bg.gif",
+			"profile_background_image_url_https": "https:\/\/abs.twimg.com\/images\/themes\/theme9\/bg.gif",
+			"profile_background_tile": false,
+			"profile_link_color": "101657",
+			"profile_sidebar_border_color": "181A1E",
+			"profile_sidebar_fill_color": "252429",
+			"profile_text_color": "666666",
+			"profile_use_background_image": true,
+			"profile_image_url": "http:\/\/pbs.twimg.com\/profile_images\/583574892538236928\/nAMq6I6e_normal.jpg",
+			"profile_image_url_https": "https:\/\/pbs.twimg.com\/profile_images\/583574892538236928\/nAMq6I6e_normal.jpg",
+			"profile_banner_url": "https:\/\/pbs.twimg.com\/profile_banners\/21295141\/1529466205",
+			"default_profile": false,
+			"default_profile_image": false,
+			"following": null,
+			"follow_request_sent": null,
+			"notifications": null
+		},
+		"geo": null,
+		"coordinates": null,
+		"place": null,
+		"contributors": null,
+		"is_quote_status": false,
+		"extended_tweet": {
+			"full_text": "Osteria Francescana in Modena, Italy, is the brand new No.1 in The World's 50 Best Restaurants 2018! Discover the full list in pictures. #Worlds50Best https:\/\/t.co\/cd0uCzCU57",
+			"display_text_range": [0,
+			174],
+			"entities": {
+				"hashtags": [{
+					"text": "Worlds50Best",
+					"indices": [137,
+					150]
+				}],
+				"urls": [{
+					"url": "https:\/\/t.co\/cd0uCzCU57",
+					"expanded_url": "https:\/\/www.youtube.com\/watch?v=B2IMbmomlRU",
+					"display_url": "youtube.com\/watch?v=B2IMbm\u2026",
+					"indices": [151,
+					174]
+				}],
+				"user_mentions": [],
+				"symbols": []
+			}
+		},
+		"quote_count": 1,
+		"reply_count": 0,
+		"retweet_count": 18,
+		"favorite_count": 54,
+		"entities": {
+			"hashtags": [],
+			"urls": [{
+				"url": "https:\/\/t.co\/0TQhUhfcMv",
+				"expanded_url": "https:\/\/twitter.com\/i\/web\/status\/1009639798028603392",
+				"display_url": "twitter.com\/i\/web\/status\/1\u2026",
+				"indices": [117,
+				140]
+			}],
+			"user_mentions": [],
+			"symbols": []
+		},
+		"favorited": false,
+		"retweeted": false,
+		"possibly_sensitive": false,
+		"filter_level": "low",
+		"lang": "en"
+	},
+	"quoted_status_permalink": {
+		"url": "https:\/\/t.co\/4XDA8xsJY9",
+		"expanded": "https:\/\/twitter.com\/theworlds50best\/status\/1009639798028603392",
+		"display": "twitter.com\/theworlds50bes\u2026"
+	},
+	"is_quote_status": true,
+	"quote_count": 0,
+	"reply_count": 0,
+	"retweet_count": 0,
+	"favorite_count": 0,
+	"entities": {
+		"hashtags": [{
+			"text": "fullcupliving",
+			"indices": [71,
+			85]
+		}],
+		"urls": [{
+			"url": "https:\/\/t.co\/4XDA8xsJY9",
+			"expanded_url": "https:\/\/twitter.com\/theworlds50best\/status\/1009639798028603392",
+			"display_url": "twitter.com\/theworlds50bes\u2026",
+			"indices": [89,
+			112]
+		}],
+		"user_mentions": [],
+		"symbols": []
+	},
+	"favorited": false,
+	"retweeted": false,
+	"possibly_sensitive": false,
+	"filter_level": "low",
+	"lang": "en",
+	"timestamp_ms": "1529561606660"
+}

@@ -1,0 +1,28 @@
+https://www.linkedin.com/learning/kafka-essential-training
+https://data-artisans.com/blog/kafka-flink-a-practical-how-to
+https://dzone.com/articles/how-to-write-a-kafka-producer-using-twitter-stream
+https://github.com/twitter/hbc/blob/master/hbc-example/src/main/java/com/twitter/hbc/example/SampleStreamExample.java
+
+============
+
+Kafka connect allows user to share the code that source and sinks the data from common sources and sinks, such as dbms. 
+At any time only one broker can be a leaderfor a given partition. Only that leader can receive and serve data for a 
+partition.
+
+Producer has option of sending a key with the message. If Key is sent, then producer has guarantee that the messages with the same key always go to the same partition.
+
+A single partion is always assigned to only one consumer. One consumer can be assigned to multiple partions if # of consumers are less than the # of partions.
+
+At most once. offsets are committed as soon as message is received. If processing of msg errors out, msg is lost.
+At least once. offsets are comnitted after the msg is processed. If processing goes wrong, msg will be processed again.
+In this case make sure processing is idempotent.
+
+=============
+$KAFKA_HOME/bin/kafka-topics.sh --create --zookeeper localhost:2181 --replication-factor 1 --partitions 1 --topic test
+$KAFKA_HOME/bin/kafka-topics.sh --list --zookeeper localhost:2181
+$KAFKA_HOME/bin/kafka-console-producer.sh --broker-list localhost:9092 --topic test
+$KAFKA_HOME/bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic test --from-beginning
+$KAFKA_HOME/bin/kafka-configs.sh --zookeeper localhost:2181 --alter --entity-type topics --entity-name test --add-config retention.ms=600000
+
+
+kafkacat -L  -b 10.168.189.174

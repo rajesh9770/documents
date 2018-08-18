@@ -1,0 +1,5 @@
+./zkCli.sh -server localhost:2182
+echo cons | nc locahost 2182
+
+install iostat
+sudo apt-get install sysstat -y

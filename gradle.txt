@@ -1,0 +1,69 @@
+What is task?
+1) code that gradle executes
+2) has lifecycle
+3) has properties
+4) has actions
+5) has dependencies
+
+task hello {
+  doLast {
+    println "Hello Gradle"
+  }
+}
+=============================
+apply plugin: 'java'
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '2.6'
+}
+===============================
+project.ext.projectVersion = "3.0"
+ext.projectVersion = "3.0"
+
+project.task("Task1")
+
+task("Task2")
+
+task "Task3"
+
+task Task4
+
+Task4.description = "Task 4 Description"
+
+Task4.doLast {println "This is Task 4"}
+
+Task3 << {println "This is task 3"}
+
+task Task5 << {println "this is task 5"}
+
+Task5 << {println "Another closure"}
+
+task Task6 {
+  description "This is task 6"
+  dependsOn Task5
+  doFirst {
+    println "Task 6 - First"
+  }
+  doLast {
+    println "This is task 6 - version $projectVersion"
+  }
+}
+
+Task6.doFirst {
+  println "Another first"
+}
+
+Task6.dependsOn Task5
+Task5.dependsOn Task4
+============================
+Initialization Phase: used to configure mutli project builds
+Configuration Phase: Executed code in the task that's not the action, e.g
+description
+Execution phase: execute the task actions e.g. doFirst and doLast
+===============================
+Task Dependency:
+
+===============================
+mustRunAfter
+shouldRunAfter
+finalizedBy

@@ -1,0 +1,385 @@
+Here are the git commands. Please change highlighted part. 
+
+## git create a new branch from test1
+git checkout -b test2 test1
+git push origin test2
+ 
+See previously deleted files.
+git log --diff-filter=D --summary
+
+git config --global user.name "Rajesh "
+git config --global user.email "Rajesh@ON.com"
+ 
+cd to the local directory  where you want to clone bigd_platforms.git repository.
+ 
+git clone https:<URL>
+
+git clone  ssh://git@<Server>/<Path>
+
+Clone particular branch:
+git clone -b  bugfix/BIGD-154-handle-errors-on-restart-gracefully  ssh://git@pie6.rtp.lab.emc.com/bigd/bigd_platforms.git
+git clone -b  bugfix/FBDLPLAT-698-create-ldap-service-to-check  ssh://git@pie6.rtp.lab.emc.com/bigd/bigd_platforms.git
+
+This will down load what’s in the repo currently, e.g. Isilon_hadoop_tools folder
+Then  you can create another folder in this directory ( source )and copy your scripts there (source/ your scripts).
+From your folder (source) you can then issue following commands.
+git init
+git add all              -- this will add all files from source folder to local git repo
+git reset <filename>
+git commit -m "Initial checkin for isilon hadoop tools"   -- this will commit to local git repo
+git remote add origin https://<User>@<Server>/scm/bigd/bigd_utilities.git
+git push origin master   -- this will push files to master repo
+ 
+This might also help:
+https://www.atlassian.com/git/tutorials/saving-changes/git-add
+
+========================
+git checkout -b develop
+git commit -m 'msg'
+git push origin develop
+======================
+Checkin whole directory:
+
+git add --all
+git commit -am "<commit message>"
+git push
+
+Change Permissions
+git ls-files --stage
+git ls-tree HEAD
+git update-index --chmod=+x foo.sh
+
+Merge conflicts
+git checkout --ours index.html
+git checkout --theirs _layouts/default.html
+=============
+You have an empty repository
+To get started you will need to run these commands in your terminal.
+New to Git? Learn the basic Git commands
+Configure Git for the first time
+git config --global user.name "name"
+git config --global user.email "email"
+Working with your repository
+I just want to clone this repository
+If you want to simply clone this empty repository then run this command in your terminal.
+git clone ssh://git@pie6.rtp.lab.emc.com/bigd/bigd_ingestors.git
+My code is ready to be pushed
+If you already have code ready to be pushed to this repository then run this in your terminal.
+cd existing-project
+git init
+git add --all
+git commit -m "Initial Commit"
+git remote add origin ssh://git@pie6.rtp.lab.emc.com/bigd/bigd_ingestors.git
+git push origin master
+My code is already tracked by Git
+If your code is already tracked by Git then set this repository as your "origin" to push to.
+cd existing-project
+git remote set-url origin ssh://git@pie6.rtp.lab.emc.com/bigd/bigd_ingestors.git
+git push origin master
+All done with the commands?
+
+=========================
+Merging into master :
+
+git checkout master
+git pull               # to update the state to the latest remote master state
+git merge develop      # to bring changes to local master from your develop branch
+git push origin master # push current HEAD to remote master branch
+
+========================
+
+git checkout develop
+git reset --hard <commit>
+git push --force origin develop
+======================
+https://stackoverflow.com/questions/5667884/how-to-squash-commits-in-git-after-they-have-been-pushed
+To find commits use git log. Ignore the commits that says merge.
+# example merging 4 commits
+git checkout my-package
+git rebase -i my-package~4 my-package
+# at the interactive screen
+# choose fixup for commit: 2 / 3 / 4  Keep first link pick and all other to squash
+DO NOT PULL EVEN IF GIT SAYS IT.
+git push -u origin +my-package
+git push -u origin +bugfix/EHC-11695-AFO-allow-graceful-shutdow
+
+
+=================
+REBASE AND SQUASH
+git checkout <feature-branch>
+git -c diff.mnemonicprefix=false -c core.quotepath=false fetch origin
+
+git -c diff.mnemonicprefix=false -c core.quotepath=false pull --no-commit --rebase origin develop
+
+THen run following commands to squash the merge commit.
+git rebase -i bugfix/EHC-11695-AFO-allow-graceful-shutdown~2 bugfix/EHC-11695-AFO-allow-graceful-shutdown
+and 
+git push -u origin +bugfix/EHC-11695-AFO-allow-graceful-shutdown
+
+git commit --amend
+=============================
+If something goes wrong, use following to reset local commits.
+ git reset --hard origin/bugfix/EHC-11695-AFO-allow-graceful-shutdown
+=====================
+
+Addind new files to previous commit that has already been pushed.
+Note that first commit is already been pushed, second commit is not.
+git commit --amend --no-edit
+git push -f origin some_branch   (DO NOT do pull)
+
+
+========================
+
+$>> git checkout -b bugfix/BIGD-10-fix-warning-during-cloudera-automation
+
+git fetch
+git rebase bugfix/BIGD-204-upgrade-hwx-automation-to-support
+
+git stash save 'msg'
+
+git stash apply 
+to apply the last stash, keeping the stash
+
+git stash list
+To drop without applying
+ git stash drop stash@{0}  
+
+Delete Branch: http://makandracards.com/makandra/621-git-delete-a-branch-local-or-remote
+git branch -d the_local_branch
+
+git push origin :the_remote_branch
+
+=================
+GIT MERGE
+  504  git checkout develop
+  505  git pull
+  506  git status
+  507  git stash
+  508  git status
+  509  git merge bugfix/BIGD-206-2-merge-code-in-develop-branch
+  510  git status
+  511  git status
+  512  git commit
+  513  git status
+  514  git push origin develop
+
+
+
+================================
+Eclipse:
+Window > Preferences > General > Editors > Text Editors
+Click on the CheckBox "whitespace characters".
+
+Window > Preferences > Java > Code Style > Formatter  
+Edit 
+
+Mvn project:
+mvn archetype:generate -DgroupId=com.emc.fbdl.test -DartifactId=bigdata -DarchetypeArtifactId=maven-archetype-quickstart -DinteractiveMode=false
+
+http://codetutr.com/2013/03/23/how-to-import-gradle-project-into-eclipse/
+
+Crtl + Shift +T to find java class
+Crtl + Shift + U all usages of variable
+Crtl + Shift + G all usages of variable
+
+window -> preferences: general -> editors -> text editors -> annotations -> occurrences
+General > Appearance > Colors and Fonts > Basic > General > Match highlight background color
+color theme
+https://github.com/eclipse-color-theme/eclipse-color-theme/issues/223
+====================
+Pull:
+git -c diff.mnemonicprefix=false -c core.quotepath=false pull --no-commit origin feature/FBDLRTP-19-2-deploy-a-system-or-a-data-container
+
+REbase 
+git -c diff.mnemonicprefix=false -c core.quotepath=false fetch origin
+
+git -c diff.mnemonicprefix=false -c core.quotepath=false pull --no-commit --rebase origin solutions_develop
+
+
+--- git pull solutions_develop into current branch and commit merge.
+git -c diff.mnemonicprefix=false -c core.quotepath=false fetch origin
+git -c diff.mnemonicprefix=false -c core.quotepath=false pull origin solutions_develop
+====================
+Push 
+git -c diff.mnemonicprefix=false -c core.quotepath=false push -v origin feature/FBDLRTP-19-2-deploy-a-system-or-a-data-container:solutions_develop
+
+
+=================
+git merge solutions_develop
+git -c diff.mnemonicprefix=false -c core.quotepath=false push -v origin bugfix/FBDLRTP-74-get-vmtemplate-from-plan:bugfix/FBDLRTP-74-get-vmtemplate-from-plan
+
+=============
+awk '{printf("cp %s /d/BackUp/3_29/\n" ,$2)}' t1 > t2
+
+https://www.kernel.org/pub/software/scm/git/docs/howto/revert-branch-rebase.html
+
+
+=============================
+
+Jira Search
+reporter = aeronn ORDER BY createdDate DESC
+FBDLSE-597
+
+====================
+Git History:
+Changing history
+If it is the most recent commit, you can simply do this:
+
+git commit --amend
+This brings up the editor with the last commit message and lets you edit the message. (You can use -m if you want to wipe out the old message and use a new one.)
+
+Pushing
+
+And then when you push, do this:
+
+git push --force-with-lease <repository> <branch>
+Or you can use "+":
+
+git push <repository> +<branch>
+Or you can use --force:
+
+git push --force <repository> <branch>
+Be careful when using these commands.
+
+If someone else pushed changes to the same branch, you probably want to avoid destroying those changes. The --force-with-lease option is the safest, because it will abort if there are any upstream changes (
+If you don't specify the branch explicitly, Git will use the default push settings. If your default push setting is "matching", then you may destroy changes on several branches at the same time.
+Pulling / fetching afterwards
+
+Anyone who already pulled will now get an error message, and they will need to update (assuming they aren't making any changes themselves) by doing something like this:
+
+git fetch origin
+git reset --hard origin/master # Loses local commits
+Be careful when using reset --hard. If you have changes to the branch, those changes will be destroyed.
+
+A note about modifying history
+
+The destroyed data is really just the old commit message, but --force doesn't know that, and will happily delete other data too. 
+So think of --force as "I want to destroy data, and I know for sure what data is being destroyed."
+ But when the destroyed data is committed, you can often recover old commits from the reflog—the data is actually orphaned instead of destroyed (although orphaned commits are periodically deleted).
+
+If you don't think you're destroying data, then stay away from --force... bad things might happen.
+
+This is why --force-with-lease is somewhat safer.
+
+ git clone -b solutions_develop_da3  ssh://git@pie6.rtp.lab.emc.com/bigd/bigd_platforms.git-delete-a-branch-local-or-remote
+ 
+ 
+
+Meld
+Install meld
+Add location of meld.exe to the PATH, e.g. C:\Program Files (x86)\Meld
+In SourceTree, go to Tools/Options/Diff
+In External Diff Tool, choose Custom
+Enter meld in Diff Command and -n $LOCAL $REMOTE in Arguments
+Click Ok and restart SourceTree
+for mergr $LOCAL $MERGED $REMOTE
+==============================
+Using pycharm as diff tools; add Pycharm bin folder to path; enter pycharm in tool command
+diff <path to file1> <path to file2>
+where file1 is your local copy, file2 is the repository version
+
+merge <path to file1> <path to file2> <path to file3> <path to output>
+where file1 is your local copy, file2 is the repository version, file3 is the base revision for file1 and file2, and output is the file to save the merge results in (optional)
+
+diff $LOCAL $REMOTE
+merge $LOCAL $REMOTE $BASE $MERGED
+
+===================
+Track remote branch upstream
+git branch -- check you are on branch foo.
+git branch -u upstream/foo
+ OR git checkout --track "origin/bugfix/EHC-8481"
+ git branch --set-upstream-to=origin/<branch> feature/Sprint03-US-West   -- e.g branch feature/Sprint03-US-West which will track remote branch feature/Sprint03-US-West.
+ 
+ So, to view the content of the most recent stash, run
+ git stash show -p
+ To view the content of an arbitrary stash, run something like
+ git stash show -p stash@{1}
+ 
+ To remove the latest stash
+ git stash drop
+ 
+ =======================
+ PyCharm
+ Hide/Show Project  Alt + 1
+ OPen Settings Ctrl + Alt + S
+Click the little settings wheel in top right of the project bar; Mark the "Auto scroll from source".
+
+https://stackoverflow.com/questions/6102908/how-do-i-get-intellij-to-recognize-common-python-modules 
+ Project settings -> Facets -> expand Python click on child -> Python Interpreter
+ Project settings -> Modules -> Expand module -> Python -> Dependencies -> select python module sdk
+
+
+ http://stackoverflow.com/questions/21711551/using-phpstorm-ideavim-i-cant-use-shiftarrow-keys-to-select-words
+ https://askubuntu.com/questions/568662/ctrl-v-and-ctrl-c-doesnt-work-in-intellij-idea-14-0-2
+ 
+ Exclude genertates src folder.
+ 
+ if __name__ == '__main__':
+    unittest.main()
+ ===================
+https://stackoverflow.com/questions/6656619/git-and-nasty-error-cannot-lock-existing-info-refs-fatal
+ Copy the SSH git URL of your existing remote. You can print it to the terminal using this command:
+
+git remote -v
+which will print out something like this:
+
+ origin git@server-address.org:account-name/repo-name.git (fetch)
+ origin git@server-address.org:account-name/repo-name.git (push)
+Remove the remote from your local git repo:
+
+git remote rm origin
+Add the remote back to your local repo:
+
+git remote add origin git@server-address.org:account-name/repo-name.git
+ 
+===================
+rebase  current branch with develop. YOu are on current branch and bringing in the changes from the develop branch. It rewinds the changes you made in your local branch, brings in changes from develop branch and then applies your changes.
+ git -c diff.mnemonicprefix=false -c core.quotepath=false -c credential.helper=manager-st fetch origin
+ git -c diff.mnemonicprefix=false -c core.quotepath=false -c credential.helper=manager-st pull --rebase origin develop
+ git -c diff.mnemonicprefix=false -c core.quotepath=false -c credential.helper=manager-st submodule update --init --recursive
+ 
+ git -c diff.mnemonicprefix=false -c core.quotepath=false -c credential.helper=manager-st pull --rebase origin release/dozer-u1
+ 
+ 
+ 
+ =================
+ REBASE
+ git -c diff.mnemonicprefix=false -c core.quotepath=false -c credential.helper=manager-st fetch origin
+
+git -c diff.mnemonicprefix=false -c core.quotepath=false -c credential.helper=manager-st pull --rebase origin develop
+From ssh://pie6.rtp.lab.emc.com/ehcinstall/ozone
+ * branch              develop    -> FETCH_HEAD
+
+First, rewinding head to replay your work on top of it...
+Applying: added playbooks for backup, rollback and cleanup
+
+git -c diff.mnemonicprefix=false -c core.quotepath=false -c credential.helper=manager-st submodule update --init --recursive
+Completed successfully.
+===============================
+Fetch vs Pull
+When you fetch, git syncs the changes with your origin/master. It will not bring it on to your master branch, until you merge it. 
+Apart from fetch, there is a pull operation that performs both the fetch and merge operations at once.
+===============================
+ 
+ git rebase --abort
+ Get list of branches created by authorname
+ git for-each-ref --format=' %(authorname) %09 %(refname)' --sort=authorname
+ ===========================
+ Intellij
+ crtl+shift+alt+L format  crtl +alt + L
+ crtl+shift+U  change case
+ crt-N find file
+ Alt+1 gets left pan - project explorer
+ Alt+2 gets your favroite
+ Alt+9 gets git window you can see what are changed
+ Find Class Command + O
+ Find File Shift + command + O
+ Find Symbol Option + Command + O 
+ Fn + > to go to end 
+ Fn + < to go to home 
+ Find classes that implememt Interface: Option + Command +B
+ 
+ 
+ 
+ 

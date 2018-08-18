@@ -1,0 +1,16 @@
+PF is defined by a .proto file
+Data is fully typed.
+Data is compressed automatically.
+Schema is needed to generate code
+Documentation can be embedded in the schema
+Language independent
+Schema evolution
+
+
+======
+To encode schema.proto
+protoc -o schema.pb schema.proto
+protoc --decode host.hostData protoFiles/host.proto < host.protobuf
+
+protoc --decode host.hostData protoFiles/host.proto < host.protobuf
+

@@ -1,0 +1,13 @@
+https://cloud.google.com/community/tutorials/setting-up-redis
+
+
+exists keyname
+type keyname
+
+Strings:
+incr, decr, incrby, decrby
+Hashes: 
+HMSET,HMGET,HDEL,HLEN, 
+
+Set:
+SADD, SREM, SISMEMBER,SCARD, SMEMBERS, SRANDMEMBER, SPOP, SMOVE

@@ -1,0 +1,3 @@
+https://console.cloud.google.com/billing/
+https://console.cloud.google.com
+https://cloud.google.com/community/tutorials/setting-up-redis

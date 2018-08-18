@@ -1,0 +1,165 @@
+All images that you download are inside this C:\Users\Public\Documents\Hyper-V\Virtual Hard Disks\MobyLinuxVM.vhdx.
+C:\Users\Public\Documents\Hyper-V\Virtual Hard Disks\MobyLinuxVM.vhdx
+
+TO share a folder, click on McCaffe in try and turn off firewall.
+Image is the application we want to run.
+
+Windows 7/8/10-home use docker toolbox. Windows10-prof use docker for windows.
+Tab completion https://docs.docker.com/docker-for-windows/#set-up-tab-completion-in-powershell
+A container is an instance of that image running as a process.
+/var/lib/docker is mounted on the persistent Virtual Disk of the VM which is under C:\Users\Public\Documents\Hyper-V\Virtual hard disks. 
+
+===================================================================
+How to get into MobyLinux
+
+#get a privileged container with access to Docker daemon
+docker run --privileged -it --rm -v /var/run/docker.sock:/var/run/docker.sock -v /usr/bin/docker:/usr/bin/docker alpine sh
+
+#run a container with full root access to MobyLinuxVM and no seccomp profile (so you can mount stuff)
+docker run --net=host --ipc=host --uts=host --pid=host -it --security-opt=seccomp=unconfined --privileged --rm -v /:/host alpine /bin/sh
+
+#switch to host FS
+chroot /host
+====================
+https://stackoverflow.com/questions/19335444/how-do-i-assign-a-port-mapping-to-an-existing-docker-container
+Change hostconfig.json and config_v2.json on mobyLinux
+
+===================================================================
+
+docker import .\vro-7.3-GA.tar.xz
+docker tag <image-id e.g.ac814> vro-raw:7.3-GA
+cd vro-docker & docker build -t vro:7.3-GA .
+
+docker run -it -p 18281:8281 \
+	-p 18283:8283 \
+	-p 15055:5055 \
+	-p 122:22 \
+	-v rajeshwin.config.properties:/root/config.properties:ro \
+	--privileged=true \
+	vro:7.3-GA
+
+docker run -it -p 18281:8281 -p 18283:8283 -p 15055:5055 -p 122:22 -v C:\rajeshwin.config.properties:/root/config.properties:ro --privileged=true vro:7.3-GA
+
+===================================================================
+
+Commands:
+docker container run --publish 80:80 --detach --name Rajesh nginx
+--docker container run --detach --name ubuntu ubuntu
+docker container run -it --name ubuntu ubuntu   //start a new container
+docker constainer start -ai ubuntu  //start a existing container
+docker constainer start ubuntu
+docker container exec -it <container-name> bash
+docker container logs <container-name>  //to see the output of container as if it is running in the foreground.
+docker container top <container-name>   //to see the processes running inside container.
+docker container inspect <container-name>  //return json containing full configuration info
+docker container inspect 
+
+docker container ls -a  // -a to list older instances 
+docker container stop <container-id>
+docker ps
+docker container rm <container-id1> <container-id2> ...  // to remove older instances of image
+docker rmi <image-name> // remove the image
+
+docker container port <containter-name>
+
+ubuntu:
+apt-get update
+apt-get install net-tools
+-- Running SSH 
+sudo apt-get install openssh-server 
+https://docs.docker.com/engine/examples/running_ssh_service/
+sed -i 's/PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config
+Better get sshd image
+docker pull rastasheep/ubuntu-sshd
+sudo docker run -d -P --name test_sshd rastasheep/ubuntu-sshd:14.04
+$ sudo docker port test_sshd 22
+
+
+--networking
+docker network ls
+docker network create my_net
+docker network inspect my_net
+docker container run -d --name new_nginx --network my_net nginx  // puts container on my_net network
+docker container run -d --name new_nginx --network my_net nginx  // puts container on my_net network
+docker network connect <my_net id> <container id> // puts existing containter also on my_net; give new network interface.
+
+
+--images
+https://hub.docker.com/r/rastasheep/ubuntu-sshd/   
+docker images ls
+docker rmi nginx
+docker constainer run -d --name mysql -e MYSQL_ALLOW_EMPTY_PASSWORD=True mysql
+
+docker run -d -p 9222:22 --network rm-net -v //D/DockerShare:/home/share --name ubuntu-sshd rastasheep/ubuntu-sshd
+
+docker history docker history rastasheep/ubuntu-sshd
+docker impage inspect rastasheep/ubuntu-sshd
+
+===================
+Volume Mount:
+docker image inspect <image name>  will show in the Config section  that Volumes are specified.
+
+docker volume ls 
+docker volume inspect <Volume name as returned by above command> // this will show mount point which you can directly access if your docker host is Linux.
+
+docker container run -d --name mysql -e MYSQL_ALLOW_EMPTY_PASSWORD=True -v  mysql-db:/var/lib/docker mysql
+
+Even if you remove docker container, the volumes will still exists.
+
+
+
+Bind Mount: can not do with docker file. only difference is name starts with /
+docker container run -d --name mysql -e MYSQL_ALLOW_EMPTY_PASSWORD=True -v  //c/mydata:/var/lib/docker mysql  ## volume will be created with the name mysql-db
+
+================
+https://hub.docker.com
+
+
+Resources:
+https://www.youtube.com/watch?v=sK5i-N34im8&feature=youtu.be&list=PLBmVKD7o3L8v7Kl_XXh3KaJl9Qw2lyuFl
+
+
+Moving an image from one host to another:
+[root@VPI107050 ~]#   docker commit <containter-id = f367982ceb39> my-vro73:Feb6
+sha256:4fc6c0f2e69dd46a9a38bcd50f30037816796871b049493a42aa04f055089343
+
+docker save -o my-vro73.img  4fc6c0f2e69d
+docker load -i my-vro73.img
+
+
+====================================
+Local moby Linux
+127.0.0.1: 9222
+
+=============
+Redis
+docker pull redislabs/redis
+docker run -d --cap-add sys_resource --name rp -p 8443:8443 -p 12000:12000 -p 9222:22 redislabs/redis 
+
+install sshd on ubuntu
+apt-get install -y openssh-server
+sed -ri 's/^PermitRootLogin\s+.*/PermitRootLogin yes/' /etc/ssh/sshd_config
+sed -ri 's/UsePAM yes/#UsePAM yes/g' /etc/ssh/sshd_config
+service ssh start
+
+===== Docker template to install SSHD =======================
+FROM       ubuntu:%VERSION%
+MAINTAINER Aleksandar Diklic "https://github.com/rastasheep"
+
+RUN apt-get update
+
+RUN apt-get install -y openssh-server
+RUN mkdir /var/run/sshd
+
+RUN echo 'root:root' |chpasswd
+
+RUN sed -ri 's/^PermitRootLogin\s+.*/PermitRootLogin yes/' /etc/ssh/sshd_config
+RUN sed -ri 's/UsePAM yes/#UsePAM yes/g' /etc/ssh/sshd_config
+
+EXPOSE 22
+
+CMD    ["/usr/sbin/sshd", "-D"]
+===========================================================
+
+--- 
+

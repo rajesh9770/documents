@@ -1,0 +1,34 @@
+container: help package, modularize and deploy software (a service in microservices architecture)
+Container Orchestration: simplify and standardrize how containers come togther to make a usable software system. manage the life cycle of container. how these container interact with each other to form a large system. 
+
+On instance-3 :https://wiki.debian.org/VirtualBox#Debian_9_.22Stretch.22
+
+Linux: curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl
+MacOS: curl -LO https://storage.googleapis.com/kubernetes-release/release/`curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt`/bin/darwin/amd64/kubectl
+Windows: curl -LO https://storage.googleapis.com/kubernetes-release/release/v1.8.0/bin/windows/amd64/kubectl.exe
+chmod +x ./kubectl
+sudo mv ./kubectl /usr/local/bin/kubectl
+kubectl version
+Linux: curl -Lo minikube https://storage.googleapis.com/minikube/releases/v0.23.0/minikube-linux-amd64 && chmod +x minikube && sudo mv minikube /usr/local/bin/
+macOS: curl -Lo minikube https://storage.googleapis.com/minikube/releases/v0.23.0/minikube-darwin-amd64 && chmod +x minikube && sudo mv minikube /usr/local/bin/
+minikube start
+kubectl run hello-minikube --image=gcr.io/google_containers/echoserver:1.4 --port=8080
+kubectl expose deployment hello-minikube  --type=NodePort
+kubectl get pod
+curl $(minikube service hello-minikube --url)
+kubectl delete deployment hello-minikube
+minikube stop
+
+kubctl get persistentvolumes
+=======
+=====================
+kubectl get pods
+kubectl run first-deployment --image=nginx
+kubectl get pods
+(maybe one more time to show the state changed from container creation to Running)
+(copy the pod name from get pods)
+kubectl exec -it pod-name -- /bin/bash
+echo Hello nginx! > /usr/share/nginx/html/index.html
+apt-get update
+apt-get install curl
+curl localhost

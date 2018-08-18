@@ -1,0 +1,24 @@
+Install erlang:
+
+[erlang-solutions]
+name=Centos $releasever - $basearch - Erlang Solutions
+#baseurl=http://packages.erlang-solutions.com/rpm/centos/$releasever/$basearch
+baseurl=http://packages.erlang-solutions.com/rpm/centos/6/x86_64
+gpgcheck=1
+gpgkey=http://packages.erlang-solutions.com/rpm/erlang_solutions.asc
+enabled=1
+
+yum install erlang
+yum install rabbitmq-server-3.6.1-1.noarch.rpm
+service rabbitmq-server start
+rabbitmq-plugins enable rabbitmq_management
+
+rabbitmqctl add_user ccm-admin hare123
+rabbitmqctl set_user_tags ccm-admin administrator
+rabbitmqctl change_password guest guest123
+rabbitmqctl add_user ccm-dev hare123
+
+rabbitmqctl add_vhost ccm-dev-vhost
+rabbitmqctl set_permissions -p ccm-dev-vhost ccm-admin ".*" ".*" ".*"
+
+http://server-name:15672/

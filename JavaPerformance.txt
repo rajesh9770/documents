@@ -1,0 +1,24 @@
+jcmd 21763 VM.uptime
+jcmd 21763 VM.system_properties
+jcmd 21763 VM.flags -all
+jcmd process_id Thread.print   or   jstack process_id
+jcmd <process id>  GC.run  # force full GC
+
+==============
+-XX:+UseSerialGC
+-XX:+UseParallelGC -XX:+UseParallelOldGC
+-XX:+UseParNewG
+-XX:+UseG1GC
+initial value (specified with -Xms)
+maximum value (-Xmx)
+
+-XX:NewRatio=N 
+Initial Young Gen Size = Initial Heap Size / (1 + NewRatio)
+
+-XX:NewSize=N
+Set the initial size of the young generation
+-XX:MaxNewSize=N
+Set the maximum size of the young generation
+
+-XmnN
+Shorthand for setting both NewSize and MaxNewSize to the same value

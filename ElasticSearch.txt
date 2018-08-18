@@ -1,0 +1,380 @@
+https://www.elastic.co/guide/en/elasticsearch/reference/current/deb.html
+
+systemctl status elasticsearch.service
+
+/usr/share/elasticsearch/bin
+
+Different tyes of documents: catalog, reviews, Orders, User Profile (In E-commerce context)
+Documents are divided into categories or types.
+
+## listing all indices 
+curl -X GET "localhost:9200/"
+curl -X GET "localhost:9200/_cat/indices?v&pretty"
+curl -X GET "localhost:9200/_cat/nodes?v&pretty"
+
+## create an index
+curl -X PUT "localhost:9200/courses?&pretty"
+
+## Add a document to an index
+curl -XPUT 'localhost:9200/courses/web/1?pretty' -H 'Content-Type: application/json' -d'
+{
+  "name": "React JS",
+  "instructor": "Ravi Vakil",
+  "hours": "7.5",
+  "lectures": "45",
+  "certification": "no",
+  "reviews": ["Great for beginners, step by step instructions", "Goes a little slowly, not meant for people who are looking for a quick overview", "Great explanations"]
+}
+'
+
+curl -XPUT 'localhost:9200/courses/web/2?pretty' -H 'Content-Type: application/json' -d'
+{
+  "name": "Angular JS",
+  "instructor": "Ravi Vakil",
+  "hours": "8",
+  "lectures": "48",
+  "certification": "no",
+  "reviews": ["For angular 1.2, would like the latest version",  "Love the examples"]
+}
+'
+
+curl -XPUT 'localhost:9200/courses/web/3?pretty' -H 'Content-Type: application/json' -d'
+{
+  "name": "PHP",
+  "instructor": "Ravi Vakil",
+  "hours": "13",
+  "lectures": "70",
+  "certification": "no",
+  "reviews": ["Love the explanations and the detail"]
+}
+'
+
+curl -XPUT 'localhost:9200/courses/web/3?pretty' -H 'Content-Type: application/json'  -d'
+{
+  "name": "PHP",
+  "instructor": "Dr. Ravi Valik ",
+  "hours": "13.5",
+  "lectures": "69",
+  "certification": "no",
+  "reviews": ["Love the explanations and the detail"]
+}
+'
+
+curl -XPUT 'localhost:9200/courses/web/4?pretty' -H 'Content-Type: application/json' -d'
+{
+  "name": "Scala",
+  "instructor": "Sunny Vakil",
+  "hours": "7",
+  "lectures": "60",
+  "certification": "no",
+  "quizzes": "yes",
+  "reviews": ["Loved the detail, great course for beginners"],
+  "type" : "programming"
+}
+'
+
+curl -XPUT 'localhost:9200/courses/web/5?pretty' -H 'Content-Type: application/json' -d'
+{
+  "name": "SQL and Databases",
+  "instructor": "Karthik Srini",
+  "hours": "15",
+  "lectures": "66",
+  "certification": "no",
+  "quizzes": "no",
+  "reviews": ["Based on the MySQL database, I was looking for a more advanced course"],
+  "type" : "programming"
+}
+'
+
+curl -XPOST 'localhost:9200/courses/web?pretty' -H 'Content-Type: application/json' -d'
+{
+  "name": "jQuery",
+  "instructor": "Lenny Penny",
+  "hours": "9",
+  "lectures": "52",
+  "certification": "no",
+  "reviews": ["Very accessible to beginners"]
+}
+'
+
+curl -XGET 'localhost:9200/_cat/indices?v&pretty'
+
+#Retrieve Document
+curl -XGET 'localhost:9200/courses/web/1?pretty'
+curl -XGET 'localhost:9200/courses/web/1?pretty&_source=false'   ##no content is retrieved. Used for checking if document exists.
+
+curl -XPUT 'localhost:9200/courses/web/3?pretty' -H 'Content-Type: application/json' -d'
+{
+  "name": "PHP",
+  "instructor": "Dr. Ravi Valik",
+  "hours": "14",
+  "lectures": "75",
+  "certification": "no",
+  "reviews": ["Love the explanations and the detail", "Very slow moving"]
+}
+'
+
+curl -XPOST 'localhost:9200/courses/web/2/_update?pretty' -H 'Content-Type: application/json' -d'
+{
+  "doc": {
+     "codelabs": "yes"
+  }
+}
+'
+
+curl -XPUT 'localhost:9200/courses/web/100?pretty' -H 'Content-Type: application/json' -d'
+{
+  "name": "Linear Regression",
+  "hours": 4,
+  "lectures": 40,
+  "type" : "Math"
+}
+'
+
+curl -XPUT 'localhost:9200/courses/web/101?pretty' -H 'Content-Type: application/json' -d'
+{
+  "name": "Optimization",
+  "hours": 2,
+  "lectures": 23,
+  "type" : "Math"
+}
+'
+
+curl -XGET 'localhost:9200/courses/web/100?pretty'
+curl -XPOST 'localhost:9200/courses/web/100/_update?pretty' -H 'Content-Type: application/json' -d'
+{
+  "script": "ctx._source.lectures += 2"
+}
+'
+curl -XGET 'localhost:9200/courses/web/100?pretty'
+
+
+curl -XGET 'localhost:9200/courses/web/101?pretty'
+curl -XPOST 'localhost:9200/courses/web/101/_update?pretty' -H 'Content-Type: application/json' -d'
+{
+  "script": "ctx._source.hours -= 1"
+}
+'
+curl -XGET 'localhost:9200/courses/web/101?pretty'
+
+curl -XDELETE 'localhost:9200/courses/web/2?pretty'
+curl -XGET 'localhost:9200/courses/web/2?pretty'
+
+curl -XGET 'localhost:9200/_mget?pretty' -H 'Content-Type: application/json'  -d'
+{
+    "docs" : [        
+        {
+            "_index" : "courses",
+            "_type" : "web",
+            "_id" : "3"
+        },{
+            "_index" : "courses",
+            "_type" : "web",
+            "_id" : "4"
+        }
+    ]
+}
+'
+
+curl -XPOST 'localhost:9200/_bulk?pretty' -H 'Content-Type: application/json' -d'
+{ "index" : { "_index" : "courses", "_type" : "web", "_id" : "103" } }
+{ "name": "Statistics","hours": 3,"lectures": 12, "type": "math"}
+{ "index" : { "_index" : "courses", "_type" : "web", "_id" : "104" } }
+{ "name": "Calculus","hours": 8,"lectures": 77, "type": "math" }
+'
+
+Auto-generate ids
+curl -XPOST 'localhost:9200/courses/web/_bulk?pretty' -H 'Content-Type: application/json' -d'
+{ "index" : {} }
+{ "name": "Statistics","hours": 3,"lectures": 12 }
+{ "index" : {} }
+{ "name": "Calculus","hours": 8,"lectures": 77 }
+'
+
+curl -XPOST 'localhost:9200/courses/web/_bulk?pretty' -H 'Content-Type: application/json' -d'
+{ "index" : {"_id" : "3" } }
+{ "name": "Statistics","hours": 3,"lectures": 12 }
+{ "index" : {"_id" : "4" } }
+{ "name": "Calculus","hours": 8,"lectures": 77 }
+{ "delete" : {"_id" : "2" } }
+{ "create" : {"_id" : "5" } }
+{ "name": "Polynomials","hours": 4,"lectures": 44 }
+{ "update" : {"_id" : "1"} }
+{ "doc" : {"instructor" : "Kiran Srini"} }
+'
+
+
+curl -H "Content-Type: application/x-ndjson" -XPOST 'localhost:9200/students/personal/_bulk?pretty&refresh' --data-binary @"students.json"
+
+
+https://next.json-generator.com/4yuPGUzGS
+[
+  {'repeat(1, 100)':
+  {
+    
+    name: {
+      first: '{{firstName()}}',
+      second: '{{surname()}}',
+    },
+    age: '{{integer(18, 75)}}',
+	gender: '{{random("Male", "Female")}}',
+    company: '{{company().toUpperCase()}}',
+	email(tags) {
+        return `${this.name.first}.${this.name.second}@${this.company}${tags.domainZone()}`.toLowerCase();
+      },
+    phone: '+1 {{phone()}}',
+    street: '{{integer(100, 999)}} {{street()}}',
+    city: '{{city()}}',
+    state: '{{state()}}, {{integer(100, 10000)}}'
+  }
+  }
+]
+
+curl -X PUT "localhost:9200/customers?&pretty"
+
+
+curl -XGET 'localhost:9200/customers/_search?q=montana&pretty'
+localhost:9200/customers/_search?q=state:kansas&sort=age:asc&pretty
+localhost:9200/customers/_search?q=state:kansas&from=10&size=2&pretty
+
+curl -XGET 'localhost:9200/customers/_search?pretty' -H 'Content-Type: application/json' -d'
+{
+  "query": { "match_all": {} },
+  "size" : 10000
+}
+'
+
+curl -XGET 'localhost:9200/customers/_search?pretty' -H 'Content-Type: application/json' -d'
+{
+  "query": { "match_all": {} },
+  "sort": { "age": { "order": "desc" } },
+  "size": 7
+}
+'
+
+curl -XGET 'localhost:9200/customers/_search?pretty' -H 'Content-Type: application/json' -d'
+{
+    "query" : {
+        "term" : { "name" : "smith" }
+    }
+}
+'
+
+curl -XGET 'localhost:9200/customers/_search?pretty' -H 'Content-Type: application/json' -d'
+{
+    "query": {
+        "match" : {
+              "name" : {
+                  "query" : "durham bray",
+                  "operator" : "or"
+               }        
+        }
+    }
+}
+'
+
+curl -XGET 'localhost:9200/customers/_search?pretty' -H 'Content-Type: application/json' -d'
+{
+    "query": {
+        "match_phrase" : {
+            "street" : "haring street"
+        }
+    }
+}
+'
+
+
+emo 6 - Common terms queries
+
+curl -XGET 'localhost:9200/customers/_search?pretty'  -H 'Content-Type: application/json' -d'
+{
+    "query": {
+        "common": {
+            "reviews": {
+                "query": "this is great",
+                 "cutoff_frequency": 0.001
+            }
+        }
+    }
+}
+
+'
+
+
+#### Metrics aggregations
+## Average
+curl -XPOST 'localhost:9200/students/_search?&pretty' -d'
+{
+   "size" : 0,
+    "aggs" : {
+        "avg_age" : { 
+             "avg" : { 
+                 "field" : "age" 
+             } 
+         }
+    }
+}
+'
+
+##Average with some filtering
+
+curl -XPOST 'localhost:9200/students/_search?&pretty' -d'
+{
+    "size" : 0,
+     "query" : {
+          "bool" : {
+               "filter" : {
+                   "match" : { "state" : "wyoming" }
+               }
+           }
+     },
+    "aggs" : {
+        "avg_age" : { 
+             "avg" : { 
+                 "field" : "age" 
+             } 
+         }
+    }
+}
+'
+
+## stats
+curl -XPOST 'localhost:9200/students/_search?&pretty' -d'
+{
+    "size" : 0,
+    "aggs" : {
+        "age_stats" : { 
+             "stats" : { 
+                 "field" : "age" 
+             } 
+         }
+    }
+}
+'
+
+## # of distinct age values
+curl -XPOST 'localhost:9200/students/_search?&pretty' -d'
+{
+   "size" : 0,
+    "aggs" : {
+        "age_count" : { 
+             "cardinality" : { 
+                 "field" : "age" 
+             } 
+         }
+    }
+}
+'
+
+## need to tell ES to construct the field data structure for text fields
+curl -XPUT 'localhost:9200/students/_mapping/personal?pretty' -d'
+{
+  "properties": {
+    "company": { 
+      "type":     "text",
+      "fielddata": true
+    }                              
+  }            
+}         
+'
+

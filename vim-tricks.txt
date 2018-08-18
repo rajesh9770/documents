@@ -1,0 +1,2 @@
+## put quotes around words
+1,$ s/\([a-zA-z]\+\)/\"\1\"/g

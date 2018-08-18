@@ -1,0 +1,3 @@
+Make sure GOPATH value is different from GOROOT.
+Make sure GOBIN value is empty.
+Your package name on the go file in eclipse should be main and not the package name "hello". This should be the case for at least the file that has main function. To do this, File->New go file->Source file type should be -> Command source file-> Empty main function. Then type your code after which you can build to see the the .exe file in GOPATH/bin and the program run.
