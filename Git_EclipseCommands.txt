@@ -9,7 +9,11 @@ git log --diff-filter=D --summary
 
 git config --global user.name "Rajesh "
 git config --global user.email "Rajesh@ON.com"
- 
+
+If you want only the remote URL, or referential integrity has been broken:
+git config --get remote.origin.url 
+
+
 cd to the local directory  where you want to clone bigd_platforms.git repository.
  
 git clone https:<URL>
@@ -380,6 +384,22 @@ Apart from fetch, there is a pull operation that performs both the fetch and mer
  Fn + < to go to home 
  Find classes that implememt Interface: Option + Command +B
  
- 
- 
+Sync Fork
+https://help.github.com/articles/syncing-a-fork/ 
+git reset --hard origin/master
+git remote -v
+git remote add upstream git@github3.cisco.com:project-tesseract/ndp-data-pipeline.git
+git remote -v
+git fetch upstream
+git fetch origin
+git branch
+git checkout walmart
+git merge upstream/walmart
+git merge upstream/walmart
+git status
+git push
+git log
+git pull
+git reset --hard origin/walmart
+
  

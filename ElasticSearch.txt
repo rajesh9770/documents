@@ -1,5 +1,8 @@
 https://www.elastic.co/guide/en/elasticsearch/reference/current/deb.html
 
+update-alternatives --config java
+cd /usr/share/elasticsearch-6.3.1
+./bin/elasticsearch -d -p pid
 systemctl status elasticsearch.service
 
 /usr/share/elasticsearch/bin

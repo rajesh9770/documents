@@ -1,0 +1,4 @@
+http://maglev.cisco.com/getstarted/setup/dev-setup-maglev/#2-8-3-a-note-about-port-mappings
+pyenv versions
+
+To create python project in Intellij, under File -> project structure -> SDK, click + on top left inside the pane and create a new project specific python env and install the necessary packages like protobuf. Then under File -> project structure -> project select that SDK.  
