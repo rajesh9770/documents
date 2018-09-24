@@ -382,7 +382,10 @@ Apart from fetch, there is a pull operation that performs both the fetch and mer
  Find Symbol Option + Command + O 
  Fn + > to go to end 
  Fn + < to go to home 
+ Mac: ⌘+⌥+V  Introduce local Variable
  Find classes that implememt Interface: Option + Command +B
+ Uppercase: ⇧⌘U  upper arrow is shift
+ REname: ⇧F6
  
 Sync Fork
 https://help.github.com/articles/syncing-a-fork/ 
@@ -393,8 +396,7 @@ git remote -v
 git fetch upstream
 git fetch origin
 git branch
-git checkout walmart
-git merge upstream/walmart
+#git checkout walmart
 git merge upstream/walmart
 git status
 git push

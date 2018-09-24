@@ -56,6 +56,36 @@ $KAFKA_HOME/bin/kafka-topics.sh --zookeeper localhost:2181 --topic test --delete
 $KAFKA_HOME/bin/kafka-console-producer.sh --broker-list localhost:9092 --topic test   ## if topic does not exists it will created with defaut replication factor 1 and partition 1.
 $KAFKA_HOME/bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic test --from-beginning --group first_app
 $KAFKA_HOME/bin/kafka-configs.sh --zookeeper localhost:2181 --alter --entity-type topics --entity-name test --add-config retention.ms=600000
+$KAFKA_HOME/bin/kafka-consumer-groups --bootstrap-server localhost:9092 --describe --group first_app   ## see the current offset of the consumer groups
+## reset the offsets 
+$KAFKA_HOME/bin/kafka-consumer-groups --bootstrap-server localhost:9092 --group first_app --reset-offsets --to-earliest --execute --topic test 
 
+$KAFKA_HOME/bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic session-group --from-beginning
 
 kafkacat -L  -b 10.168.189.174
+
+kubectl -n ndp  exec -it kafka-0 -c sidecar bash
+/kafka/bin/kafka-topics.sh --zookeeper zookeeper.maglev-system.svc.cluster.local:2181/ndp --list
+graphstream group host inventory metricstream nf-parsed nf-raw session-group syslog_msg topology trap
+./kafka-console-consumer.sh --topic session-group --from-beginning
+./kafka-topics.sh --zookeeper zookeeper.maglev-system.svc.cluster.local:2181/ndp --topics session-group --describe 
+./kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic session-group --from-beginning
+./kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic topology --from-beginning
+./kafka-console-producer.sh --broker-list localhost:9092 --topic session-group
+./connect-standalone.sh ../config/connect-standalone.properties ../config/connect-file-sink.properties
+./kafka-topics.sh --zookeeper zookeeper.maglev-system.svc.cluster.local:2181/ndp --alter --topic session-group --config retention.ms=1000
+./kafka-topics.sh --zookeeper zookeeper.maglev-system.svc.cluster.local:2181/ndp --alter --topic topology --config retention.ms=1000
+./connect-standalone.sh ../config/connect-standalone.properties ../config/connect-file-source.properties
+
+#of records in the topics
+./kafka-run-class.sh kafka.tools.GetOffsetShell --broker-list localhost:9092 --topic session-group --time -1 --offsets 1
+session-group:0:1719598
+
+tail -f /data/maglev/srv/ndp/kafka/syslog_msg-0/00000000000000000000.log
+Use system property -Dlog4j.configurationFile=file:/path/to/file/log4j2.xml
+
+
+java -classpath ./ndp-kafka-tools-all-1.2-SNAPSHOT.jar -DKAFAKBROKER=localhost:9092  -jar ./ndp-kafka-tools-all-1.2-SNAPSHOT.jar topology /tmp/topology.data
+
+
+

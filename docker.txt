@@ -59,6 +59,7 @@ docker container stop <container-id>
 docker ps
 docker container rm <container-id1> <container-id2> ...  // to remove older instances of image
 docker rmi <image-name> // remove the image
+docker images -a
 
 docker container port <containter-name>
 
@@ -74,7 +75,11 @@ docker pull rastasheep/ubuntu-sshd
 sudo docker run -d -P --name test_sshd rastasheep/ubuntu-sshd:14.04
 $ sudo docker port test_sshd 22
 
+Or to expose ssh port at 9222
+sudo docker run -d -p 2222:22 --name test_sshd rastasheep/ubuntu-sshd:14.04
 
+docker run -d -p 9222:22 --name ubuntu ubuntu1
+ 
 --networking
 docker network ls
 docker network create my_net
@@ -162,4 +167,21 @@ CMD    ["/usr/sbin/sshd", "-D"]
 ===========================================================
 
 --- 
+
+
+docker pull  rastasheep/ubuntu-sshd:18.04
+docker run -d -p 9222:22 --name ubuntu01 rastasheep/ubuntu-sshd:18.04   
+
+ssh -p 9222 root@localhost
+# adduser rajeshm   # on ubuntu
+#usermod -aG sudo rajeshm  # on ubuntu
+ssh-copy-id -p 9222 rajeshm@localhost  ## From mac
+ssh -p 9222 rajeshm@localhost
+
+sudo update-alternatives --install /usr/bin/java java /usr/lib/jdk1.8.0_181/bin/java 1
+
+sudo docker commit CONTAINER_ID ubuntu02
+
+docker container start  ubuntu01
+
 

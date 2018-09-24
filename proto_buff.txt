@@ -14,3 +14,5 @@ protoc --decode host.hostData protoFiles/host.proto < host.protobuf
 
 protoc --decode host.hostData protoFiles/host.proto < host.protobuf
 
+protoc --python_out=. ise.proto
+
