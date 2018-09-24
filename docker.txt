@@ -102,19 +102,34 @@ docker impage inspect rastasheep/ubuntu-sshd
 
 ===================
 Volume Mount:
-docker image inspect <image name>  will show in the Config section  that Volumes are specified.
+Docker Volumes are a configuration option for a container that create a
+special location outside of the container's union file system to store unique
+data. This preserves it across container removals and allows us to attach it
+to whatever container we want and container sees it like a local path.
+ 
+docker image inspect <image name>  will show in the Config section  that
+Volumes are specified. 
+In mounts section, you will see that docker actually maps this volumn to local
+directory on local host like 
+Mounts:[Destination: /var/lib/docker/volumns/.../_data] 
 
 docker volume ls 
 docker volume inspect <Volume name as returned by above command> // this will show mount point which you can directly access if your docker host is Linux.
 
-docker container run -d --name mysql -e MYSQL_ALLOW_EMPTY_PASSWORD=True -v  mysql-db:/var/lib/docker mysql
+Named Volumn
+docker container run -d --name mysql -e MYSQL_ALLOW_EMPTY_PASSWORD=True -v
+mysql-db:/var/lib/docker mysql  #### volume will be created with the name mysql-d
+THis gives local directory a name, mysql-db, however it is still created in
+/var/lib/docker/volumns/mysql-db/_data
 
-Even if you remove docker container, the volumes will still exists.
+Even if you remove docker container, the volumes will still exists. 
+Run docker volumn prune to clean unused volumns
 
 
-
+Bind mounts are simply sharing or mounting a host directory into a container.
 Bind Mount: can not do with docker file. only difference is name starts with /
-docker container run -d --name mysql -e MYSQL_ALLOW_EMPTY_PASSWORD=True -v  //c/mydata:/var/lib/docker mysql  ## volume will be created with the name mysql-db
+docker container run -d --name mysql -e MYSQL_ALLOW_EMPTY_PASSWORD=True -v
+//c/mydata:/var/lib/docker mysql  ## volume will be created at /c/mydata  
 
 ================
 https://hub.docker.com
