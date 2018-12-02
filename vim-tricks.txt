@@ -1,2 +1,6 @@
 ## put quotes around words
 1,$ s/\([a-zA-z]\+\)/\"\1\"/g
+
+
+Concatenate two lines
+:1,$ global/^/,+2 join

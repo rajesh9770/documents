@@ -122,3 +122,17 @@ Daemon for longer builds:
 1) gradle --daemon build
 2) create a gradle.properties in side ~/.gradle and set org.gradle.daemon=true 
 
+====================
+Fat Shadow Jar
+
+plugins {
+    id 'java'
+    id 'com.github.johnrengelman.shadow' version '4.0.0'
+}
+
+shadowJar {
+    baseName = 'shadow'
+    classifier = null
+    version = null
+    zip64 true
+}
