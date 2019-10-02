@@ -1,6 +1,7 @@
 .profile or .bash_profile is executed when you login (interactive and login)
 .bashrc is only read by a shell that's both interactive and non-login
 
+
 http://www.webupd8.org/2014/03/how-to-install-oracle-java-8-in-debian.html
 https://www.mkyong.com/java/how-to-install-oracle-jdk-8-on-debian/
 update-alternatives --config java
