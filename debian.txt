@@ -16,8 +16,30 @@ Start services on boot
 
 
 Time on mac
-date -u  -r <ms>
+date -u  -r <ms>   --sets time
+date +%m%d%Y    -- prints date 05082019
 On Ubumtu
 date -d @1537554038  #UTC time
 TZ='America/Los_Angeles' date  -d @1537554038   ## local time
 
+stty rows 50 cols 180
+
+
+Install Java on Ubuntu:
+lsb_release -a  -- check on version
+
+apt-get install software-properties-common
+sudo add-apt-repository ppa:webupd8team/java
+sudo apt update
+sudo apt install oracle-java8-installer
+sudo update-alternatives --config java
+
+
+apt-get update
+apt-get install iputils-ping
+
+==============================
+Reset ssh login 
+sudo mkdir /var/run/sshd
+sudo chmod 755 -R /var/run/sshd
+sudo service ssh restart

@@ -4,3 +4,33 @@
 
 Concatenate two lines
 :1,$ global/^/,+2 join
+
+Delete every other line
+:g/^/+d
+
+Count #of words
+g and the ctrl g
+
+Count # of occurances of particular word.
+%s/long//ng
+
+============
+copy 100-200 lines into another file.
+:100,200w filename
+
+===========
+Write a part of file to another file:
+Put cursor on first line of the group of lines you want to write out. Hit V, for "start visual block of lines".
+
+Move cursor to the bottom of the group of lines. Vim will highlight with reverse video each line.
+
+Write out. Hit : to go into command line mode. That will give you a prompt at the bottom of the scren that looks like: :'<,'> That means from the start of the visual block to the end. Type w and the filename and hit return.
+===========
+
+Do Search/Replace within a part of file.
+Select the text in visual mode (I assume that's what you're doing), then press : to start typing a command, you'll see something like this appear in the command line:
+
+:'<,'>
+That means that the command will apply to the selection. Then type s/search/replace/ and hit enter. (Add a g after the third slash if you want to replace all matches, and a c if you want a confirmation for every replace)
+
+alias gvim='gvim --remote-tab-silent '

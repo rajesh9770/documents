@@ -14,3 +14,4 @@ SADD, SREM, SISMEMBER,SCARD, SMEMBERS, SRANDMEMBER, SPOP, SMOVE
 
 flushall
 redis-cli info memory
+redis-cli KEYS "*csc*" | xargs redis-cli DEL

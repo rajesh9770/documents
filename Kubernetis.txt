@@ -1,5 +1,30 @@
+
+Virtual Machine vs Container : 
+VM has guest OS, OS specific libraries and binaries. It runs on top of HostOS and hypervisor. Each VM has it's own Guest OS and bins and libraries and applications. We you start VM, you have to wait till guest OS boots up. 
+Container has lightweight. They share Guest OS. So starting a container is fast.
+Container contains binaries with all the dependencies.
+
 container: help package, modularize and deploy software (a service in microservices architecture)
 Container Orchestration: simplify and standardrize how containers come togther to make a usable software system. manage the life cycle of container. how these container interact with each other to form a large system. 
+
+POd is an abstraction - lowest deployable unit in k8s. pods contains multiple containers.
+k8s cann't manage containers directly. it manages pods.
+IP addresses are associated with pods, not individual containers.
+Containers in a pod share localhost and can share volumns. 
+
+Deployment creates replica sets which creates pod.
+Pod creates containsrs.
+
+A deployment is a high-level construct - 
+  allows scaling, rolling updates, rollbacks
+  multiple deployments can be used together to implement a canary deployment
+  delegates pods managemnet to replica sets
+
+A replica set is a low-level construct
+  makes sure that a given number of identical pods are runninh
+  allows scaling
+  rarely used directly
+
 
 On instance-3 :https://wiki.debian.org/VirtualBox#Debian_9_.22Stretch.22
 
@@ -22,7 +47,9 @@ minikube stop
 kubctl get persistentvolumes
 =======
 =====================
-kubectl get pods
+kubectl get namespace  -- list all namespaces
+kubectl create namespace ndp
+kubectl get pods -A
 kubectl run first-deployment --image=nginx
 kubectl get pods
 (maybe one more time to show the state changed from container creation to Running)
@@ -32,3 +59,147 @@ echo Hello nginx! > /usr/share/nginx/html/index.html
 apt-get update
 apt-get install curl
 curl localhost
+
+resource list
+kubectl api-resources -o wide
+details about each object
+kubectl explain --help
+
+Examples:
+  # Get the documentation of the resource and its fields
+  kubectl explain pods
+
+  # Get the documentation of a specific field of a resource
+  kubectl explain pods.spec.containers
+
+Options:
+      --api-version='': Get different explanations for particular API version
+      --recursive=false: Print the fields of fields (Currently only 1 level deep)
+
+Usage:
+  kubectl explain RESOURCE [options]
+
+Use "kubectl options" for a list of global command-line options (applies to all commands).
+
+
+=====================
+scale
+kubectl scale deployment/my-nginx --replicas=1
+
+=====
+Why Helm?
+First build your application in a containter, wrap that container in pOD and run POD in k8 cluster.
+Pod can be rerpliicated; needs load balancing, Config Maps, Storage. So a single application might need more than one object in k8 cluster. Each object is installed using it's own yaml file. Each object is deloyed separately. NO atomicity.
+
+====
+kubectl config view -- confirms default cluster is minikube
+helm init -- Installs tiller on the cluster
+helm reset  -- removes tiller from the cluster
+kubectl create namespace lab
+kubectl create -f tiller-serviceaccount.yaml
+kubectl create -f tiller-role.yaml
+kubectl create -f tiller-rolebinding.yaml
+
+helm init --service-account tiller --tiller-namespace lab
+kubectl get all --namespace=lab
+helm create test
+helm install test --tiller-namespace=lab --namespace=lab
+helm install test --tiller-namespace=lab --namespace=default
+helm ls --tiller-namespace ndp
+
+Chart is a package. Chart is a definition of an application and release is an instance of that chart running in the K8.
+
+If charts has dependencies, then put them in requirements.txt
+================
+Chart.yaml
+
+apiVersion helm-api version; always v1
+appVersion version of App you want to install with helm; can be any string
+version: version of your chart - major.minor.patch
+
+If you made changes to an existing application and want to install it, you do not want install a new release, but it is a new revision of the same release.  
+
+Chart version refers to a change in thr chart's file structure i.e. application definition. 
+Release version refers to a change in the running instance of that chart.
+
+
+Application version: is the version of the application depending on development.
+Chart version is the version of the helm definition of your application.
+Release revision is the update of the existing release, most of the time due to an upgrade of the application or it's configuration. 
+
+Install a release                       helm install [chart]
+upgrade a release revision              helm upgrade [release chart]
+Rollback to a release revision          helm rollback [release revision]   e.g helm rollback guestbook 1
+Print release history                   helm history [release]
+Display release status                  helm status [release]
+Show details of a release               helm get [release]   --helm get  all guestbook
+Uninstall a release                     helm delete [release]
+List releases                           helm list
+Create tar ball                         helm package <Chart-name>
+ helm repo index .
+ helm package --sign
+verify chart locally                    helm verify chart.tgz
+verify chart at install time            helm install --verify
+  helm package frontend backend
+  helm repo list
+  helm dependency build gustbook -- uses requirements.lock file that has fixed version
+  helm dependency update gustbook -- uses requirements.yaml file that will download newer version if available.
+  
+==========
+Conditions overrides tags
+
+helm 
+====
+Stopping: minikube stop 
+
+minikube start --vm-driver=virtualbox --alsologtostderr -v=9
+
+
+https://github.com/kubernetes/minikube/issues/4540
+$ minikube stop
+$ minikube delete
+$ brew cask uninstall minikube
+$ rm -rf ~/.minikube ~/.kube
+Go to https://www.virtualbox.org/wiki/Downloads, use VirtualBox_Uninstall.tool script provided in OS X host .dm file
+Disconnect from VPN
+Restart laptop, make sure that you are not reconnected to VPN
+Install VirtualBox using VirtualBox.pkg from the same .dmg file as the previous step.
+$ brew cask install minikube
+$ minikube start --alsologtostderr -v=9
+Connect to VPN (if you wish)
+
+
+=========
+https://github.com/kubernetes/minikube/issues/1099
+Set port forwarding for the minikube vm to forward port 8443 on 127.0.0.1 to port 8443 in the VM.
+VBoxManage controlvm minikube natpf1 k8s-apiserver,tcp,127.0.0.1,8443,,8443
+
+Create a new kubectl context
+kubectl config set-cluster minikube-vpn --server=https://127.0.0.1:8443 --insecure-skip-tls-verify
+kubectl config set-context minikube-vpn --cluster=minikube-vpn --user=minikube
+When on the VPN you can set kubectl to use the NAT'ed port:
+
+kubectl config use-context minikube-vpn
+
+When off the VPN you can use the normal minikube context:
+
+kubectl config use-context minikube
+
+Apparently you can use the same port forwarding for the MiniKube dashboard too
+
+VBoxManage controlvm minikube natpf1 k8s-dashboard,tcp,127.0.0.1,30000,,30000
+VBocManage modifyvm minikube --memory 4096
+===========
+For Course to view UI:
+minikube addons enable ingress
+minikube ip -- get ip of cluster
+
+
+=====
+Alias
+alias k='kubectl'
+alias kn='kubectl -n ndp'
+
+
+ 
+

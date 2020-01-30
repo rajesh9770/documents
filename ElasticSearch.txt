@@ -104,7 +104,19 @@ curl -XGET 'localhost:9200/_cat/indices?v&pretty'
 
 #Retrieve Document
 curl -XGET 'localhost:9200/courses/web/1?pretty'
+curl -XGET 'localhost:9200/tsg_ngf_t1535779008_vertex/web/1?pretty'
 curl -XGET 'localhost:9200/courses/web/1?pretty&_source=false'   ##no content is retrieved. Used for checking if document exists.
+
+curl -XPUT ':9200/ourses/web/3?pretty' -H 'Content-Type: application/json' -d'
+{
+  "name": "PHP",
+  "instructor": "Dr. Ravi Valik",
+  "hours": "14",
+  "lectures": "75",
+  "certification": "no",
+  "reviews": ["Love the explanations and the detail", "Very slow moving"]
+}
+'
 
 curl -XPUT 'localhost:9200/courses/web/3?pretty' -H 'Content-Type: application/json' -d'
 {
@@ -143,6 +155,7 @@ curl -XPUT 'localhost:9200/courses/web/101?pretty' -H 'Content-Type: application
 }
 '
 
+curl -XGET 'localhost:9200/courses/web/100?pretty'
 curl -XGET 'localhost:9200/courses/web/100?pretty'
 curl -XPOST 'localhost:9200/courses/web/100/_update?pretty' -H 'Content-Type: application/json' -d'
 {
@@ -241,6 +254,12 @@ localhost:9200/customers/_search?q=state:kansas&sort=age:asc&pretty
 localhost:9200/customers/_search?q=state:kansas&from=10&size=2&pretty
 
 curl -XGET 'localhost:9200/customers/_search?pretty' -H 'Content-Type: application/json' -d'
+{
+  "query": { "match_all": {} },
+  "size" : 10000
+}
+'
+curl -XGET 'localhost:9200/tsg_ngf_tnt01_vertex/_search?pretty' -H 'Content-Type: application/json' -d'
 {
   "query": { "match_all": {} },
   "size" : 10000
@@ -381,3 +400,431 @@ curl -XPUT 'localhost:9200/students/_mapping/personal?pretty' -d'
 }         
 '
 
+curl -X POST "172.19.205.55:9200/tsg_ngf_5bb97d7c33e95200bf752782_vertex/_search?pretty" -H 'Content-Type: application/json' -d'
+{"query":{"bool":{"must":[{"term":{"~label":"EndDevice"}},{"term":{"~elementid":"ed_B8_27_EB_6A_B2_26"}}],"must_not":[],"should":[]}},"from":0,"size":10000,"sort":["~modificationtime"],"aggs":{}}
+
+
+curl -XPOST '172.19.205.55:9200/_bulk?pretty' -H 'Content-Type: application/json' -d'
+{ "delete" : { "_index" : "tsg_ngf_5bb97d7c33e95200bf752782_vertex", "_type" : "vertex", "_id" : "WTIDbmYByqkiBG8OgT80" } }
+'
+
+curl -XPOST '10.195.127.157:9200/_bulk?pretty' -H 'Content-Type: application/json' -d'
+{ "delete" : { "_index" : "tsg_ngf_5bb6e2f27aa3cd0084a8def1_vertex", "_type" : "vertex", "_id" : "3" } }
+'
+
+curl -XPOST '10.195.127.180:9200/_bulk?pretty' -H 'Content-Type: application/json' -d'
+{ "delete" : { "_index" : "tsg_ngf_5c097c70e229800085558b64_vertex", "_type" : "vertex", "_id" : "WTIDbmYByqkiBG8OgT81" } }
+'
+
+curl -XPOST 'http://172.19.205.55:9200/tsg_ngf_5bb97d7c33e95200bf752782_vertex/vertex/_delete_by_query'   -H 'Content-Type: application/json' -d '{
+  "query" : {
+    "term" : {"~elementid":["ed_B8_27_EB_6A_B2_26"]} }
+  }
+}
+'
+
+curl -XPOST 'http://172.19.205.55:9200/tsg_ngf_5bb97d7c33e95200bf752782_edge/edge/_delete_by_query'   -H 'Content-Type: application/json' -d '{
+  "query" : {
+    "term" : {"~elementid":["B8_27_EB_2C_CD_4D:clienthealthAggregation_5_min:clienthealthAggregation_B8_27_EB_2C_CD_4D_5_min_groupId=nongroup"]} }
+  }
+}
+'
+
+curl -XPUT '10.195.127.180:9200/tsg_ngf_5c097c70e229800085558b64_vertex/vertex/WTIDbmYByqkiBG8OgT80?pretty' -H 'Content-Type: application/json' -d'
+{
+  "~label": "Interface",
+  "~elementid": "B8_27_EB_6A_B2_26",
+  "~modificationtime": 1539474329621,
+  "~nextmodificationtime":  9223372036854775807,
+  "~entrystatus": "created",
+  "isInternal": true,
+  "isHost": true,
+  "macAddr": "B8:27:EB:6A:B2:26",
+  "hostName" : "RAJESH",
+  "hostType" : "OS-RAJESH",
+  "ipAddr": "10.100.20.20"
+}
+'
+
+curl -XPUT '10.195.127.180:9200/tsg_ngf_5c097c70e229800085558b64_vertex/vertex/WTIDbmYByqkiBG8OgT82?pretty' -H 'Content-Type: application/json' -d'
+{
+  "~label": "Interface",
+  "~elementid": "B8_27_EB_6A_B2_27",
+  "~modificationtime": 1539474329621,
+  "~nextmodificationtime":  9223372036854775807,
+  "~entrystatus": "created",
+  "isInternal": true,
+  "isHost": true,
+  "macAddr": "B8:27:EB:6A:B2:27",
+  "hostName" : "SAGAR",
+  "hostType" : "OS-RAJESH",
+  "ipAddr": "10.100.20.27"
+}
+'
+
+
+curl -XPUT '10.195.127.180:9200/tsg_ngf_5c097c70e229800085558b64_vertex/vertex/WTIDbmYByqkiBG8OgT81?pretty' -H 'Content-Type: application/json' -d'
+{
+    "~elementid": "ed_BB_BB_CC_DD_00_08",
+    "~label": "EndDevice",
+    "~modificationtime": 1544155735799,
+    "~entrystatus": "created",
+    "~nextmodificationtime": 9223372036854775806,
+    "isServer": false,
+    "endDeviceId": "VYOTORTQsCisco-IP-Phone-7941",
+    "endDeviceName": "VYOTORTQ",
+    "hostName" : "RAJESH",
+    "hostType": "OS-RAJESH",
+    "sessionEndTime": "",
+    "sessionStartTime": 1544155735799
+}
+'
+
+curl -XPUT '172.19.205.55:9200/tsg_ngf_5bb97d7c33e95200bf752782_vertex/vertex/bzLSb2YByqkiBG8OED8W?pretty' -H 'Content-Type: application/json' -d'
+{
+  "~label": "EndPoint",
+  "~elementid": "18.0.13.101",
+  "~modificationtime": 1539474329621,
+  "~nextmodificationtime":  9223372036854775807,
+  "~entrystatus": "created",
+  "isInternal": true,
+  "isHost": true,
+  "ipAddr": "18.0.13.101"
+}
+'
+## edge between EndPoint and Interface
+
+curl -XPUT '172.19.205.55:9200/tsg_ngf_5bb97d7c33e95200bf752782_edge/edge/djLSb2YByqkiBG8OED8W?pretty' -H 'Content-Type: application/json' -d'
+{
+  "~label": "AssignTo",
+  "~elementid": "18.0.13.101_AssignTo_B8_27_EB_6A_B2_26",
+  "~modificationtime": 1539474329621,
+  "~nextmodificationtime":  9223372036854775807,
+  "~entrystatus": "created",
+  "~outvertexid": "18.0.13.101",
+  "~invertexid": "B8_27_EB_6A_B2_26"
+}
+'
+
+curl -XGET 'localhost:9200/tsg_ngf_tnt0_vertex/vertex/_search?pretty' -H 'Content-Type: application/json' -d'
+{
+    "query" : {
+        "term" : {  "name.keyword": "" }
+    }
+}
+'
+curl -XPOST 'http://localhost:9200/tsg_ngf_tnt0_vertex/vertex/_delete_by_query'   -H 'Content-Type: application/json' -d '{ "query" : { "match_all": {} } } '
+
+curl -XPOST 'http://10.195.127.192:9200/tsg_ngf_5bd213c6cf0ee00083cac8ea_vertex/vertex/_delete_by_query'   -H 'Content-Type: application/json' -d '{
+  "query" : {
+   "match_all": {}
+  }
+}
+'
+
+curl -XPUT '10.195.127.180:9200/tsg_ngf_5c097c70e229800085558b64_vertex/vertex/WTIDbmYByqkiBG8OgT81?pretty' -H 'Content-Type: application/json' -d'
+{
+  "~label": "Interface",
+  "~elementid": "C8_27_EB_6A_B2_48",
+  "~modificationtime": 1539474329621,
+  "~nextmodificationtime":  9223372036854775807,
+  "~entrystatus": "created",
+  "isInternal": true,
+  "isHost": true,
+  "macAddr": "C8:27:EB:6A:B2:48",
+  "hostName" : "MINERVA",
+  "hostType" : "SUN-OS",
+  "ipAddr": "10.100.20.48",
+  "connectionType": "WIRELESS"
+}
+'
+
+curl -XPUT '10.195.127.210:9200/tsg_ngf_5c411c2a924729008cd93a8c_vertex/vertex/WTIDbmYByqkiBG8OgT82?pretty' -H 'Content-Type: application/json' -d'
+{
+  "~label": "Interface",
+  "~elementid": "C8_27_EB_6A_B2_28",
+  "~modificationtime": 1539474329621,
+  "~nextmodificationtime":  9223372036854775807,
+  "~entrystatus": "created",
+  "isInternal": true,
+  "isHost": true,
+  "macAddr": "C8:27:EB:6A:B2:28",
+  "hostType" : "SUN-OS",
+  "ipv4": "10.100.20.27",
+  "ipv6List": ["10.100.20.28", "10.200.20.28"]
+}
+'
+
+curl -XPUT '10.195.127.180:9200/tsg_ngf_5c097c70e229800085558b64_vertex/vertex/WTIDbmYByqkiBG8OgT83?pretty' -H 'Content-Type: application/json' -d'
+{
+  "~label": "Interface",
+  "~elementid": "C8_27_EB_6A_B2_27",
+  "~modificationtime": 1539474329621,
+  "~nextmodificationtime":  9223372036854775807,
+  "~entrystatus": "created",
+  "isInternal": true,
+  "isHost": true,
+  "macAddr": "C8:27:EB:6A:B2:27",
+  "hostName" : "MINERVA",
+  "hostType" : "SUN-OS",
+  "ipAddr": "10.100.20.27",
+  "connectionType": "WIRED"
+}
+'
+
+curl -XPUT '172.19.205.152:28559/tsg_ngf_5c3318c6b40e8f00bf8971ed_vertex/vertex/WTIDbmYByqkiBG8Og100?pretty' -H 'Content-Type: application/json' -d'
+{
+  "~label": "User",
+  "~elementid": "testUser1",
+  "~modificationtime": 1539474329621,
+  "~nextmodificationtime":  9223372036854775807,
+  "~entrystatus": "created",
+  "userId": "user#"
+}
+'
+curl -XPUT '172.19.205.152:28559/tsg_ngf_5c3318c6b40e8f00bf8971ed_vertex/vertex/WTIDbmYByqkiBG8Og100?pretty' -H 'Content-Type: application/json' -d'
+{
+  "~label": "User",
+  "~elementid": "testUser1",
+  "~modificationtime": 1539474329621,
+  "~nextmodificationtime":  9223372036854775807,
+  "~entrystatus": "created",
+  "userId": "user!"
+}
+'
+
+
+curl -XPOST 'http://10.195.127.180:9200/tsg_ngf_5c097c70e229800085558b64_vertex/vertex/_delete_by_query'   -H 'Content-Type: application/json' -d '{
+  "query" : {
+    "term" : {"~elementid":"C8_27_EB_6A_B2_28"} }
+  }
+}
+'
+
+curl -XPUT '10.195.127.210:9200/tsg_ngf_5c411c2a924729008cd93a8c_vertex/vertex/WTIDbmYByqkiBG8Og105?pretty' -H 'Content-Type: application/json' -d'
+{
+    "~elementid": "ed_BB_BB_CC_DD_00_12",
+    "~label": "EndDevice",
+    "~modificationtime": 1544155735799,
+    "~entrystatus": "created",
+    "~nextmodificationtime": 9223372036854775806,
+    "isServer": false,
+    "endDeviceId": "VYOTORTQsCisco-IP-Phone-7941",
+    "endDeviceName": "VYOTORTQ",
+    "hostName" : "RAJESH5",
+    "hostType": "LAPTOP",
+    "sessionEndTime": "",
+    "sessionStartTime": 1544155735799
+}
+'
+
+This give infinite time:
+"~nextmodificationtime": 9223372036854775807,
+
+curl -XPUT '10.195.127.210:9200/tsg_ngf_5c411c2a924729008cd93a8c_vertex/vertex/cMSYq2gBvyjFxzRcPtU7?pretty' -H 'Content-Type: application/json' -d'
+{
+"~elementid": "10.100.20.20-10.100.20.20",
+"~label": "NwDeviceEndPoint",
+"~modificationtime": 1549067099742,
+"~entrystatus": "created",
+"isHost": false,
+"isIpV6": false,
+"~nextmodificationtime": 9223372036854775807,
+"interfaceName": "Ise-Connected-Interface",
+"ipAddr": "110.109.21.210"
+}'
+
+
+curl -XPUT '10.195.150.69:9200//edge/djLSb2YByqkiBG8OED8W?pretty' -H 'Content-Type: application/json' -d'
+{
+  "~label": "AssignTo",
+  "~elementid": "18.0.13.101_AssignTo_B8_27_EB_6A_B2_26",
+  "~modificationtime": 1539474329621,
+  "~nextmodificationtime":  9223372036854775807,
+  "~entrystatus": "created",
+  "~outvertexid": "18.0.13.101",
+  "~invertexid": "B8_27_EB_6A_B2_26"
+}
+'
+
+//get all indices
+curl -X GET "172.25.21.190:9200/_cat/indices?v&pretty"
+
+curl -XGET '172.25.21.190:9200/tsg_ngf_5c90196e7994cd00b9285f75_vertex/_search?pretty' -H 'Content-Type: application/json' -d'
+{
+    "query" : {
+        "term" : { "~label" : "NetworkDevice" }
+    },
+    "size" : 1000
+}
+'
+
+"~elementid": "ed_D8_EB_97_B8_01_9E",
+
+{
+  "query": {
+    "bool": {
+      "must": [
+        {
+          "term": {
+            "~label": "EndDevice"
+          }
+        },
+        {
+          "term": {
+            "~elementid": "ed_D8_EB_97_B8_01_9E"
+          }
+        }
+      ],
+      "must_not": [],
+      "should": []
+    }
+  },
+  "from": 0,
+  "size": 100,
+  "sort": [
+    "~nextmodificationtime"
+  ],
+  "aggs": {}
+}
+
+Get a vertex with id: MD-SymkBw1c0P482Cp20
+http://172.19.205.55:4709/tsg_ngf_5c88957a4b5ea300c3ab7df4_vertex/vertex/MD-SymkBw1c0P482Cp20
+
+
+curl  -XGET 'elasticsearch.ndp.svc.cluster.local:9200/_cat/health'
+
+curl -X POST "http://172.19.205.55:4709/tsg_ngf_5c88957a4b5ea300c3ab7df4_vertex/vertex/MD-SymkBw1c0P482Cp20/_update?pretty" -H 'Content-Type: application/json' -d'
+{
+  "doc": { "hostName": "Thilak" }
+}
+'
+
+N0VCoWoBN2seik9fq-tX is id NOT the elementid
+curl -X POST "http://172.19.205.55:26028/tsg_ngf_5ccb54c77cc0cf00c87ee994_vertex/vertex/N0VCoWoBN2seik9fq-tX/_update?pretty" -H 'Content-Type: application/json' -d'
+{
+  "doc": { "isDeleted": true }
+}
+'
+
+
+
+curl -XPUT 'localhost:9200/tsg_ngf_tnt0_vertex/vertex/BdZ6LWoB-vog2qO5Hb_Q?pretty' -H 'Content-Type: application/json' -d'
+{
+"~elementid": "hostGroup1",
+"~label": "HostGroup",
+"~modificationtime": 155553393000,
+"~entrystatus": "created",
+"~nextmodificationtime": 9223372036854775807,
+"name": "hostGroup1",
+"hostGroupRecords": "[{"name": "hostgroup12", "baseAddress" : "10.1.10.1", "prefixLength":	24 }, {"name": "hostgroup2", "baseAddress" : "10.1.10.1", "prefixLength":	24 }]"
+}'
+
+
+curl -XPUT 'localhost:9200/tsg_ngf_tnt0_vertex/vertex/BdZ6LWoB-vog2qO5Hb_Q?pretty' -H 'Content-Type: application/json' -d'
+{
+"~elementid": "edm_AC_EB_CC_DD_EE_FF",
+"~label": "EndDeviceMetric",
+"~modificationtime": 1557162412094,
+"~entrystatus": "created",
+"~nextmodificationtime": 9223372036854775807,
+"sessionEndTime": 1538607180285,
+"sessionStartTime": 1538607170285
+}'
+
+curl -X POST "http://192.168.114.25:9200/tsg_ngf_tnt0_vertex/vertex/jbK1uGoBaNK5yeLjCSqC/_update?pretty" -H 'Content-Type: application/json' -d'
+{
+  "doc": { "hostName": "^,$%&*()!@#-_." }
+}
+'
+
+curl -XPUT '192.168.114.25:9200/tsg_ngf_tnt0_vertex/vertex/WTIDbmYByqkiBG8Og100?pretty' -H 'Content-Type: application/json' -d'
+{
+  "~label": "User",
+  "~elementid": "employees\h702190868@hofstra.edu",
+  "~modificationtime": 1539474329621,
+  "~nextmodificationtime":  9223372036854775807,
+  "~entrystatus": "created",
+  "userId": "employees\h702190868@hofstra.edu"
+}
+'
+
+curl -XPOST 'http://localhost:9200/tsg_ngf_tnt0_vertex/vertex/_delete_by_query'   -H 'Content-Type: application/json' -d '{ "query" : { "match_all": {} } } '
+curl -XPOST 'http://localhost:9200/tsg_ngf_tnt0_vertexid/vertexid/_delete_by_query'   -H 'Content-Type: application/json' -d '{ "query" : { "match_all": {} } } '
+curl -XPOST 'http://localhost:9200/tsg_ngf_tnt0_edge/edge/_delete_by_query'   -H 'Content-Type: application/json' -d '{ "query" : { "match_all": {} } } '
+curl -XPOST 'http://localhost:9200/tsg_ngf_tnt0_edgeid/edgeid/_delete_by_query'   -H 'Content-Type: application/json' -d '{ "query" : { "match_all": {} } } '
+
+
+Sort on ~modification
+{
+  "query": {
+    "bool": {
+      "must": [
+        {
+          "term": {
+            "~label": "HostGroup"
+          }
+        }
+      ],
+      "must_not": [],
+      "should": []
+    }
+  },
+  "from": 0,
+  "size": 1000,
+  "sort": [{
+    "~modificationtime": {
+      "order": "desc",
+      "unmapped_type" : "long"
+    }
+  }],
+  "aggs": {}
+}
+
+
+curl -XPUT '10.30.199.245:7916/tsg_ngf_5d2f7ca90582b000bdf21440_vertex/vertex/WTIDbmYByqkiBG8Og100?pretty' -H 'Content-Type: application/json' -d'
+{
+  "~label": "User",
+  "~elementid": "1@hofstra.edu",
+  "~modificationtime": 1539474329611,
+  "~nextmodificationtime":  9223372036854775807,
+  "userId": "employees702190868@hofstra.edu",
+  "~entrystatus": "created"
+}
+'
+
+curl -XPUT '10.30.199.245:7916/tsg_ngf_5d2f7ca90582b000bdf21440_edge/edge/djLSb2YByqkiBG8OED8W?pretty' -H 'Content-Type: application/json' -d'
+{
+  "~label": "MemberOf",
+  "~elementid": "18.0.13.101_AssignTo_B8_27_EB_6A_B2_26",
+  "~modificationtime": 1539474329621,
+  "~nextmodificationtime":  9223372036854775807,
+  "~entrystatus": "created",
+  "~outvertexid": "1@hofstra.edu",
+  "~invertexid": "group"
+}
+'
+
+===========
+
+
+curl -X GET   'http://10.78.28.111:22105/_cat/thread_pool/search?v&h=node_name,name,active,rejected,completed'
+
+
+curl -XGET 'elasticsearch.ndp.svc.cluster.local:9200/tsg_ngf_5ca82f00f2553b00c7333443_vertex/_search?&pretty'  -H 'Content-Type: application/json' -d'
+{
+   "size" : 0,
+    "aggs" : {
+        "age_count" : {
+             "terms" : {
+                 "field" : "~label"
+             }
+         }
+    }
+}
+'
+
+curl -XPOST 'http://elasticsearch.ndp.svc.cluster.local:9200/tsg_ngf_5d96f44946184b00c573f521_vertex/vertex/_delete_by_query'   -H 'Content-Type: application/json' -d '{ "query" : { "match_all": {} } } '
+curl -XPOST 'http://elasticsearch.ndp.svc.cluster.local:9200/tsg_ngf_5d96f44946184b00c573f521_vertexid/vertexid/_delete_by_query'   -H 'Content-Type: application/json' -d '{ "query" : { "match_all": {} } } '
+curl -XPOST 'http://elasticsearch.ndp.svc.cluster.local:9200/tsg_ngf_5d96f44946184b00c573f521_edge/edge/_delete_by_query'   -H 'Content-Type: application/json' -d '{ "query" : { "match_all": {} } } '
+curl -XPOST 'http://elasticsearch.ndp.svc.cluster.local:9200/tsg_ngf_5d96f44946184b00c573f521_edgeid/edgeid/_delete_by_query'   -H 'Content-Type: application/json' -d '{ "query" : { "match_all": {} } } '

@@ -100,6 +100,9 @@ docker run -d -p 9222:22 --network rm-net -v //D/DockerShare:/home/share --name 
 docker history docker history rastasheep/ubuntu-sshd
 docker impage inspect rastasheep/ubuntu-sshd
 
+https://sysadminnightmare.org/docker-save-load-import-export-commit/
+docker save  <image-id> > filename.tar
+docker load < filename.tar
 ===================
 Volume Mount:
 Docker Volumes are a configuration option for a container that create a
@@ -114,11 +117,9 @@ directory on local host like
 Mounts:[Destination: /var/lib/docker/volumns/.../_data] 
 
 docker volume ls 
-docker volume inspect <Volume name as returned by above command> // this will show mount point which you can directly access if your docker host is Linux.
-
+docker volume inspect <Volume name as returned by above command> // this will show mount point which you can directly access if your docker host is Linux. 
 Named Volumn
-docker container run -d --name mysql -e MYSQL_ALLOW_EMPTY_PASSWORD=True -v
-mysql-db:/var/lib/docker mysql  #### volume will be created with the name mysql-d
+docker container run -d --name mysql -e MYSQL_ALLOW_EMPTY_PASSWORD=True -v mysql-db:/var/lib/docker mysql  #### volume will be created with the name mysql-d
 THis gives local directory a name, mysql-db, however it is still created in
 /var/lib/docker/volumns/mysql-db/_data
 
@@ -128,9 +129,9 @@ Run docker volumn prune to clean unused volumns
 
 Bind mounts are simply sharing or mounting a host directory into a container.
 Bind Mount: can not do with docker file. only difference is name starts with /
-docker container run -d --name mysql -e MYSQL_ALLOW_EMPTY_PASSWORD=True -v
-//c/mydata:/var/lib/docker mysql  ## volume will be created at /c/mydata  
+docker container run -d --name mysql -e MYSQL_ALLOW_EMPTY_PASSWORD=True -v //c/mydata:/var/lib/docker mysql  ## volume will be created at /c/mydata  
 
+//c/mydata is on local machine and /var/lib/docker is on docker container
 ================
 https://hub.docker.com
 
@@ -187,11 +188,23 @@ CMD    ["/usr/sbin/sshd", "-D"]
 docker pull  rastasheep/ubuntu-sshd:18.04
 docker run -d -p 9222:22 --name ubuntu01 rastasheep/ubuntu-sshd:18.04   
 
-ssh -p 9222 root@localhost
+ssh -p 9222 root@localhost  passwd is root
 # adduser rajeshm   # on ubuntu
 #usermod -aG sudo rajeshm  # on ubuntu
 ssh-copy-id -p 9222 rajeshm@localhost  ## From mac
 ssh -p 9222 rajeshm@localhost
+
+apt-get install update
+apt-get install sudo vim
+apt-get install git-core
+apt-get install gradle
+wget https://dl.google.com/go/go1.12.5.linux-amd64.tar.gz
+sudo tar -C /usr/local -xzf go1.12.5.linux-amd64.tar.gz
+export PATH=$PATH:/usr/local/go/bin
+sudo apt-get install --reinstall gcc
+sudo mkdir -p /opt/maglev
+sudo chown -R rajeshm:rajeshm /opt/maglev
+
 
 sudo update-alternatives --install /usr/bin/java java /usr/lib/jdk1.8.0_181/bin/java 1
 
@@ -199,4 +212,10 @@ sudo docker commit CONTAINER_ID ubuntu02
 
 docker container start  ubuntu01
 
+docker run -d -p 9222:22 -p 5901:5901 --name packet-tracer ubuntu02   
+docker run -d -p 9222:22 -p 9200:9200 -p 9300:9300 -p 8182:8281 -v
+/Users/<username>/docker-share:/home/share --name ubuntu02 ubuntu02   
+
+
+================
 

@@ -1,0 +1,8 @@
+Fault : It is a condition that causes the software to fail to perform its required function. Manifestion of an error.
+Error : Refers to difference between Actual Output and Expected output.
+Failure : It is the inability of a system or component to perform required function according to its specification. 
+IEEE Definitions
+
+Failure: External behavior is incorrect
+Fault: Discrepancy in code that causes a failure.
+Error: Human mistake that caused fault

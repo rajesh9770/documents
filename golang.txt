@@ -1,3 +1,42 @@
 Make sure GOPATH value is different from GOROOT.
 Make sure GOBIN value is empty.
 Your package name on the go file in eclipse should be main and not the package name "hello". This should be the case for at least the file that has main function. To do this, File->New go file->Source file type should be -> Command source file-> Empty main function. Then type your code after which you can build to see the the .exe file in GOPATH/bin and the program run.
+
+============================================
+# Make sure you grab the latest version
+curl -OL https://github.com/google/protobuf/releases/download/v3.2.0/protoc-3.2.0-linux-x86_64.zip
+
+# Unzip
+unzip protoc-3.2.0-linux-x86_64.zip -d protoc3
+
+# Move protoc to /usr/local/bin/
+sudo mv protoc3/bin/* /usr/local/bin/
+
+# Move protoc3/include to /usr/local/include/
+sudo mv protoc3/include/* /usr/local/include/
+
+# Optional: change owner
+sudo chwon [user] /usr/local/bin/protoc
+sudo chwon -R [user] /usr/local/include/google
+============================================
+
+
+curl -OL https://github.com/google/protobuf/releases/download/v3.2.0/protoc-3.2.0-linux-x86_64.zip
+
+sudo apt-get install golang-goprotobuf-dev
+
+=========================================
+On Mac:
+Download the package file, open it, and follow the prompts to install the Go tools. The package installs the Go distribution to /usr/local/go.
+
+The package should put the /usr/local/go/bin directory in your PATH environment variable. You may need to restart any open Terminal sessions for the change to take effect.
+
+Protobuff: https://github.com/golang/protobuf
+Grab the code from the repository and install the proto package. The simplest way is to run:
+go get -u github.com/golang/protobuf/protoc-gen-go
+The compiler plugin, protoc-gen-go, will be installed in $GOPATH/bin unless $GOBIN is set. It must be in your $PATH for the protocol compiler, protoc, to find it.
+
+Uninstall:
+To remove an existing Go installation from your system delete the go directory. This is usually /usr/local/go under Linux, macOS, and FreeBSD or c:\Go under Windows.
+
+You should also remove the Go bin directory from your PATH environment variable. Under Linux and FreeBSD you should edit /etc/profile or $HOME/.profile. If you installed Go with the macOS package then you should remove the /etc/paths.d/go file. Windows users should read the section about setting environment variables under Windows.

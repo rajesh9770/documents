@@ -69,12 +69,16 @@ kubectl -n ndp  exec -it kafka-0 -c sidecar bash
 graphstream group host inventory metricstream nf-parsed nf-raw session-group syslog_msg topology trap
 ./kafka-console-consumer.sh --topic session-group --from-beginning
 ./kafka-topics.sh --zookeeper zookeeper.maglev-system.svc.cluster.local:2181/ndp --topics session-group --describe 
+$KAFKA_HOME/bin/kafka-topics.sh --zookeeper localhost:2181 --topic session-group --describe
+./kafka-topics.sh --zookeeper localhost:2181 --describe
 ./kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic session-group --from-beginning
 ./kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic topology --from-beginning
 ./kafka-console-producer.sh --broker-list localhost:9092 --topic session-group
 ./connect-standalone.sh ../config/connect-standalone.properties ../config/connect-file-sink.properties
-./kafka-topics.sh --zookeeper zookeeper.maglev-system.svc.cluster.local:2181/ndp --alter --topic session-group --config retention.ms=1000
+./kafka-topics.sh --zookeeper zookeeper.maglev-system.svc.cluster.local:2181/ndp --alter --topic session-group --config retention.ms=60000
+./kafka-topics.sh --zookeeper localhost:2181 --alter --topic session-group --config retention.ms=60000
 ./kafka-topics.sh --zookeeper zookeeper.maglev-system.svc.cluster.local:2181/ndp --alter --topic topology --config retention.ms=1000
+./kafka-run-class.sh kafka.tools.DumpLogSegments --deep-iteration --print-data-log --files ~/Downloads/00000000000000000000.log > /tmp/kafka.log
 ./connect-standalone.sh ../config/connect-standalone.properties ../config/connect-file-source.properties
 
 #of records in the topics
@@ -88,4 +92,8 @@ Use system property -Dlog4j.configurationFile=file:/path/to/file/log4j2.xml
 java -classpath ./ndp-kafka-tools-all-1.2-SNAPSHOT.jar -DKAFAKBROKER=localhost:9092  -jar ./ndp-kafka-tools-all-1.2-SNAPSHOT.jar topology /tmp/topology.data
 
 
+kafka-0.kafka.ndp.svc.cluster.local
+elasticsearch-0.elasticsearch.ndp.svc.cluster.local
 
+
+grep log.retention.hours * in /kafka/config/server.properties

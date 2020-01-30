@@ -136,3 +136,13 @@ shadowJar {
     version = null
     zip64 true
 }
+
+
+==========
+gradle dependencies   -- to get dependency tree
+(*) - is used to indicate that particular dependency is described somewhere else in the tree
+
+-> - is used to point the dependency that wins in version conflict.
+
+Running a single test:
+gradle test --tests com.cisco.ndp.pipeline.inventory.InventoryPipelineHandlerTest.testInventory -debug

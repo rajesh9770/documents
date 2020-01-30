@@ -1,0 +1,32 @@
+
+
+Create a empty file ssh in root dirrectory of boot.(top level directory in img)
+
+For WiFi:
+create wpa_supplicant.conf on boot.
+network={
+    ssid="<network name>"
+    psk="<passwd>"
+    key_mgmt=WPA-PSK
+}
+
+Enable root user:
+Allows login as a root.
+Default passwd for pi is rasberry.
+nano /etc/ssh/sshd_config
+uncomment PermitRootLogin yes
+
+/etc/init.d/ssh restart
+once ssh restarted; assign root passwd.
+passwd root
+
+====
+Backing up SD card
+diskutil list
+sudo dd if=/dev/disk3 of=~/rpi_backup/<filename>.dmg  -- takes several mins depending on size
+
+import to SD card:
+Format SD card first if necessary:
+sudo newfs_msdos -F 16 /dev/disk3
+sudo dd if=~/rpi_backup/<filename>.dmg of=/dev/disk3
+

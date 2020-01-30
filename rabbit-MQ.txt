@@ -21,4 +21,8 @@ rabbitmqctl add_user ccm-dev hare123
 rabbitmqctl add_vhost ccm-dev-vhost
 rabbitmqctl set_permissions -p ccm-dev-vhost ccm-admin ".*" ".*" ".*"
 
+rabbitmqctl add_user test test
+rabbitmqctl set_user_tags test administrator
+rabbitmqctl set_permissions -p / test ".*" ".*" ".*"
+
 http://server-name:15672/

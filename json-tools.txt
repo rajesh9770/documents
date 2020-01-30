@@ -1,0 +1,7 @@
+jq '.node.collectionStatus |="Managed"' inv.json
+jq length <filename>
+
+https://stedolan.github.io/jq/manual/#Stringinterpolation-%5C%28foo%29
+cat <json containing arrays>  | jq '.[].name'
+cat /tmp/t2  | jq '.[] | "\(.name)  \(.state)" ' 
+

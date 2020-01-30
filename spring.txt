@@ -1,0 +1,17 @@
+Environment 
+application-{profile}.properties  place it under resources and set VM options -Dspring.profiles.active=test
+
+edit applications.properties file and set
+logging.level.org.springframework.web=DEBUG
+
+
+
+
+gradle file
+dependencies
+compile 'org.springframework.boot:spring-boot-starter-data-jpa'
+compile 'mysql:mysql-connector-java'
+
+
+
+

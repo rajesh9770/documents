@@ -1,0 +1,14 @@
+1.0.0
+major.minor.patch
+
+bugfix that will not break existing release, you increment last #
+if you introduce a new api that adds a new functionality is backward compatible, increment minor
+if you introduce a new api that is not backward compatoble, then you have major release.
+
+https://docs.npmjs.com/misc/semver
+
+https://github.com/Masterminds/semver
+
+Tilde Ranges ~1.2.3 ~1.2 ~1§
+Allows patch-level changes if a minor version is specified on the comparator. Allows minor-level changes if not.
+

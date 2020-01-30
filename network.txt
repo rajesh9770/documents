@@ -1,0 +1,73 @@
+magctl service setenv collector-ise DEBUG true
+en
+show  ip device tracking all
+conf t
+interface gigabitEthernet 1/0/10
+
+ROUTER > ENA  (ENABLE)
+ROUTER > CONFIG T
+ROUTER(config)# HOSTNAME <hotname>
+R1(config)# INT F0/0
+R1(config-if)# IP Address 192.168.1.254 255.255.255.0
+R1(config-if)# NO SHUT 
+
+crtl-Z to go in privledged mode
+SHOW IP INT BRIEF
+
+------
+Switch>En
+Switch>Config T
+Switch (config) >Hostname SW1
+SW1 (config)> INT VLAN 1
+SW1 (config-if)> IP ADDRESS 192.168.1.253 255.255.255.0
+SW1 (config-if)> Exit
+SW1 (config) >IP default-gateway 192.168.1.254
+SW1# crtl+Z
+SW1# show run
+SW1# config t
+SW1(config)# int vlan 1
+SW1(config-if) no shut
+
+
+
+
+
+=======
+switch is L2; has many ports, end devices are connected to switch, talks within same networks; connects devices of same network that wants to communicate with each other
+
+router is L3; has few ports, connets with gws, talks across two different networks that are not alike
+
+
+
+=======
+PacketTracer:
+https://github.com/lassalleloan/docker-cisco-packet-tracer
+open -a XQuartz
+In the XQuartz preferences, go to the Security tab and make sure you’ve got Allow connections from network clients ticked.
+xhost + $(ifconfig en0 | grep inet | awk '$1=="inet" {print $2}')
+
+============
+https://www.youtube.com/user/packetpioneer
+
+
+=========
+TCPDUMP
+
+tcpdump -n -B 4096 port 80
+tcpdump -nnvvvSeXX -i any port 80
+tcpdump -nnvvvSeXX  -B 4096 -i eth0  port 50552
+tcpdump -nnvvvSeXX  -B 4096 -i eth0 host 18.0.13.14
+
+
+root@collector-ise-75fccfd785-bktrx:/opt/maglev/bin# netstat
+Active Internet connections (w/o servers)
+Proto Recv-Q Send-Q Local Address           Foreign Address         State
+tcp        0      0 collector-ise-75f:43712 10.63.1.212:amqp        ESTABLISHED
+tcp        0      0 collector-ise-75f:60338 collector-manager.:8090 ESTABLISHED
+tcp        0      0 collector-ise-75f:50552 ise26-vpod4.NDPDOM:8910 ESTABLISHED
+tcp        0      0 collector-ise-75f:38078 exalt1-il-wan-gw2-:8086 ESTABLISHED
+
+
+Now 
+
+

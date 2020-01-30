@@ -1,0 +1,13 @@
+>show dbs
+>show collections
+
+>var doc = db.books.findOne()
+>doc
+
+var doc = db.books.find()
+> while(doc.hasNext()){ print(tojson(doc.next())); }
+var myCursor = db.users.find( { type: 2 } );
+
+while (myCursor.hasNext()) {
+   print(tojson(myCursor.next()));
+}

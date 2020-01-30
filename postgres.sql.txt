@@ -1,0 +1,63 @@
+psql -h 10.110.80.155 -p 10432
+default port: 5432
+
+yum install postgresql-server
+/var/lib/pgsql/data/pg_hba.conf
+Change to
+local	all	all	md5
+
+# IPv4 local connections:
+host    all         all         172.16.0.0/16         md5
+
+
+pg_ctl -D /usr/local/var/postgres start
+
+create user 
+createuser -P -e rajesh -- from bash prompt
+CREATE DATABASE sales OWNER salesapp TABLESPACE salesspace;
+
+create database sqoopadmin owner rajesh
+SELECT spcname FROM pg_tablespace;
+
+create table sqoopjobs (id serial constraint uniq unique, name varchar(50),
+command text, starttime timestamp, finishtime timestamp, hadoopjobid int,
+staus varchar(10) ;
+
+
+
+schematool -dbType postgres -info
+schematool -dbType postgres -initSchema
+
+\l list all db's
+\c rajeshdb;  -- connect to database rajeshdb
+\dt *.* ; -- show tables
+\dt retail_demo.* -- table in schema retail_demo
+\db meta-command is also useful for listing the existing tablespaces.
+\du list roles
+\d+ table name -- describe table
+\df *.*  --- show all functions
+
+--
+
+
+
+
+SELECT    tc.constraint_name, tc.table_name, kcu.column_name, 
+    ccu.table_name AS foreign_table_name,
+    ccu.column_name AS foreign_column_name 
+FROM 
+    information_schema.table_constraints AS tc 
+    JOIN information_schema.key_column_usage AS kcu
+      ON tc.constraint_name = kcu.constraint_name
+    JOIN information_schema.constraint_column_usage AS ccu
+      ON ccu.constraint_name = tc.constraint_name
+WHERE constraint_type = 'FOREIGN KEY' AND tc.table_name='ARCNAMESMAP';
+
+
+====
+
+pg on mac:
+passwd for <userid>/postgres
+
+psql <userid> 
+http://127.0.0.1:54213/browser/#
