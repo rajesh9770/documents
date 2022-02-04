@@ -1,0 +1,374 @@
+.profile or .bash_profile is executed when you login (interactive and login)
+.bashrc is only read by a shell that's both interactive and non-login
+
+Find latest files
+find ./ -type f -mtime -15 -exec ls -l {} \;
+find / -xdev -type f -size +100M
+
+http://www.webupd8.org/2014/03/how-to-install-oracle-java-8-in-debian.html
+https://www.mkyong.com/java/how-to-install-oracle-jdk-8-on-debian/
+update-alternatives --config java
+vim /etc/environment  JAVA_HOME="/usr/lib/jvm/java-8-oracle"
+
+f="$(basename -- $FILE)"
+echo "$f"
+
+/.ssh/authorized_keys2
+ssh-rsa AAAAB3NzaC1yc2EAAAABJQAAAIB08NKmtWqQDNY+5tgfTT9qjlxpT6QGHh1z5fGLVKveLzOJayatMMnCGJlvX3WJ43DQA0iFivD1vO87R0QOB+t6Ra37V3Y74TVEPf+I1FF7W/ek04pp4VxLOhP7gEJJMQjtPf2PC4C2est4Y/KWA2SW4gTjvDZaIzV1iWkI1b9j0w==
+ssh-copy-id kube@host
+
+Start services on boot
+/etc/systemd/system
+/etc/rc.local
+
+===========
+Summing up 
+...  | paste -sd+ - | bc
+
+=========
+Time on mac
+date -u  -r <ms>   --sets time
+date +%m%d%Y    -- prints date 05082019
+history -w  -- to write
+history -r  -- to reload
+On Ubumtu
+date -d @1537554038  #UTC time
+TZ='America/Los_Angeles' date  -d @1537554038   ## local time
+TZ='Asia/Kolkata' date  -d @1537554038   ## local time
+TZ='UTC' date -r `expr 18900 \* 3600 \* 24`
+
+## set timezone
+rm -f /etc/localtime
+ln -sf /usr/share/zoneinfo/America/Los_Angeles /etc/localtime
+or
+timedatectl list-timezones  -- to see all TZ
+sudo timedatectl set-timezone America/Los_Angeles
+
+
+stty rows 50 cols 180
+
+
+Install Java on Ubuntu:
+lsb_release -a  -- check on version
+
+apt-get install software-properties-common
+sudo add-apt-repository ppa:webupd8team/java
+sudo apt update
+sudo apt install oracle-java8-installer
+sudo update-alternatives --config java
+
+
+apt-get update
+apt-get install iputils-ping
+
+==============================
+Reset ssh login 
+sudo mkdir /var/run/sshd
+sudo chmod 755 -R /var/run/sshd
+sudo service ssh restart
+
+vim /etc/ssh/sshd_config
+Update these properties:
+ClientAliveInterval 600
+ClientAliveCountMax 10
+
+grep 'pattern1\|pattern2' fileName_or_filePath
+grep -E 'pattern1|pattern2' fileName_or_filePath
+grep -e pattern1 -e pattern2 fileName_or_filePath
+
+ssh maglev@2001:420:284:2004:4:181:131:165 -p 2222
+
+==========================
+htop
+New blind navigation: F2, right, delete, right, delete. Then you probably want to add cpu average to the left column
+https://superuser.com/questions/806614/how-to-compress-or-hide-the-processors-at-top-of-htop-on-large-machines
+https://linux.die.net/man/1/htop
+
+===================
+awk:
+awk  'BEGIN{i=0;}/Msg:/{++i;  print $0 > "outFile_"i".txt"}' sample_graph_stream_2.txt
+
+
+=====================
+tmux new -s rca-1
+To detach from a session:
+Ctrl-b d
+tmux detach
+
+To re-attach to a session:
+tmux attach -t [session name]
+tmux a -t [session name]
+
+Sessions, like windows, are numbered beginning from 0. If you forgot which session you wanted to attach to, you can view active sessions:
+
+tmux list-sessions
+A list of all command keys is accessible with:
+
+Ctrl-b ?
+
+-------------------------------------------
+Running command in tmux without logging into tmx
+Step 1. Create a detached session:
+
+user@host:~$ tmux new -d -s mySession
+Step 2: Execute a command in the detached session:
+
+user@host:$ tmux send-keys -t mySession.0 "echo 'Hello World'" ENTER
+Step 3: Attach to the session:
+
+user@host:$ tmux a -t mySession
+-------------------------------------------
+create new tmux sessions
+tmux new -d -s R0
+tmux new -d -s R1
+tmux new -d -s R2
+tmux new -d -s R3
+tmux new -d -s R4
+tmux new -d -s R5
+tmux new -d -s R6
+tmux new -d -s R7
+
+
+tmux list-sessions
+tmux kill-session -t Q9
+
+send cmds to tmux
+tmux send-keys -t R0 "java -jar /tmp/dataingestor-1.0.0.jar -h kafka-0.kafka.ndp.svc.cluster.local:9092 -t graphstream -u 61579fbbcf13f23483fc440f -m File_0.txt -l 0" ENTER;
+tmux send-keys -t R1 "java -jar /tmp/dataingestor-1.0.0.jar -h kafka-0.kafka.ndp.svc.cluster.local:9092 -t graphstream -u 61579fbbcf13f23483fc440f -m File_1.txt -l 1" ENTER;
+tmux send-keys -t R2 "java -jar /tmp/dataingestor-1.0.0.jar -h kafka-0.kafka.ndp.svc.cluster.local:9092 -t graphstream -u 61579fbbcf13f23483fc440f -m File_2.txt -l 2" ENTER;
+tmux send-keys -t R3 "java -jar /tmp/dataingestor-1.0.0.jar -h kafka-0.kafka.ndp.svc.cluster.local:9092 -t graphstream -u 61579fbbcf13f23483fc440f -m File_3.txt -l 3" ENTER;
+tmux send-keys -t R4 "java -jar /tmp/dataingestor-1.0.0.jar -h kafka-0.kafka.ndp.svc.cluster.local:9092 -t graphstream -u 61579fbbcf13f23483fc440f -m File_4.txt -l 4" ENTER;
+tmux send-keys -t R5 "java -jar /tmp/dataingestor-1.0.0.jar -h kafka-0.kafka.ndp.svc.cluster.local:9092 -t graphstream -u 61579fbbcf13f23483fc440f -m File_5.txt -l 5" ENTER;
+tmux send-keys -t R6 "java -jar /tmp/dataingestor-1.0.0.jar -h kafka-0.kafka.ndp.svc.cluster.local:9092 -t graphstream -u 61579fbbcf13f23483fc440f -m File_6.txt -l 6" ENTER;
+tmux send-keys -t R7 "java -jar /tmp/dataingestor-1.0.0.jar -h kafka-0.kafka.ndp.svc.cluster.local:9092 -t graphstream -u 61579fbbcf13f23483fc440f -m File_7.txt -l 7" ENTER;
+
+
+tmux send-keys -t R0 "sed -i 's/\"timestamp\"\:[0123456789 ]*/\"timestamp\"\: 1638993189000/g' File_0.txt" ENTER;
+tmux send-keys -t R1 "sed -i 's/\"timestamp\"\:[0123456789 ]*/\"timestamp\"\: 1638993189000/g' File_1.txt" ENTER;
+tmux send-keys -t R2 "sed -i 's/\"timestamp\"\:[0123456789 ]*/\"timestamp\"\: 1638993189000/g' File_2.txt" ENTER;
+tmux send-keys -t R3 "sed -i 's/\"timestamp\"\:[0123456789 ]*/\"timestamp\"\: 1638993189000/g' File_3.txt" ENTER;
+tmux send-keys -t R4 "sed -i 's/\"timestamp\"\:[0123456789 ]*/\"timestamp\"\: 1638993189000/g' File_4.txt" ENTER;
+tmux send-keys -t R5 "sed -i 's/\"timestamp\"\:[0123456789 ]*/\"timestamp\"\: 1638993189000/g' File_5.txt" ENTER;
+tmux send-keys -t R6 "sed -i 's/\"timestamp\"\:[0123456789 ]*/\"timestamp\"\: 1638993189000/g' File_6.txt" ENTER;
+tmux send-keys -t R7 "sed -i 's/\"timestamp\"\:[0123456789 ]*/\"timestamp\"\: 1638993189000/g' File_7.txt" ENTER;
+
+tmux send-keys -t R0 "" ENTER;
+tmux send-keys -t R1 "" ENTER;
+tmux send-keys -t R2 "" ENTER;
+tmux send-keys -t R3 "" ENTER;
+tmux send-keys -t R4 "" ENTER;
+tmux send-keys -t R5 "" ENTER;
+tmux send-keys -t R6 "" ENTER;
+tmux send-keys -t R7 "" ENTER;
+
+for i in `seq 1 10`; do tmux send-keys -t Q${i} "sh  /data/tmp/mock/queryengine/runParallelQueries.sh payload2.json" ENTER;    done
+
+----------------------
+==================
+
+screen -S rajesh
+Ctrl-A d dettach
+screen -r rajesh  -- reattach
+================
+sftp -P 2222 maglev@10.104.125.49
+wget ftp://10.78.29.220/RCA/CSCwa70374-assurance/maglev-192.168.4.53-rca-2022-01-19_07-24-54_UTC.tar.gz
+==============
+Java Heap dump MAT Memory analyzer
+
+https://www.ashwinjayaprakash.com/2013/11/analyzing-large-java-heap-dumps-when.html
+https://blog.gceasy.io/2015/08/28/jhat-heap-dump-analysis/
+https://help.eclipse.org/2021-06/index.jsp?topic=%2Forg.eclipse.mat.ui.help%2Ftasks%2Fqueryingheapobjects.html
+
+Option 1:
+Eclipse Memory Analyzer is obviously the best tool for this job. However, trying to get the UI to run remotely is very painful. Launching Eclipse and updating the UI is an extra load on the JVM that is already busy analyzing a 30G heap dump. Fortunately, there is a script that comes with MAT to parse the the heap dump and generate HTML reports without ever having to launch Eclipse! It's just that the command line option is not well advertised.
+
+Command line heap analysis using Eclipse MAT:
+
+Assuming Eclipse MAT is installed and we are inside the mat/ directory, modify MemoryAnalyzer.ini heap settings to use a large heap to handle large dumps:
+
+    -startup
+    plugins/org.eclipse.equinox.launcher_1.2.0.v20110502.jar
+    --launcher.library
+    plugins/org.eclipse.equinox.launcher.gtk.linux.x86_64_1.1.100.v20110505
+    -vmargs
+    -Xms24g
+    -Xmx24g
+
+Run MAT against the heap dump:
+
+    ./ParseHeapDump.sh ../today_heap_dump/jvm.hprof
+
+This takes a while to execute and generates indices and other files to make repeated analysis faster. Then use the indices created in the previous step and run a "Leak suspects" report on the heap dump.
+
+    ./ParseHeapDump.sh ../today_heap_dump/jvm.hprof org.eclipse.mat.api:suspects
+
+The output is a small and easy to download jvm_Leak_Suspects.zip. This has HTML files just like the MAT Eclipse UI. It can be easily SCP'ed/emailed around.
+
+Other report types possible.
+
+    org.eclipse.mat.api:suspects
+    org.eclipse.mat.api:overview
+    org.eclipse.mat.api:top_components
+
+
+https://eclipsesource.com/blogs/2013/01/21/10-tips-for-using-the-eclipse-memory-analyzer/
+http://wiki.eclipse.org/MemoryAnalyzer
+http://live.eclipse.org/node/939
+http://live.eclipse.org/node/520
+https://stackoverflow.com/questions/39790098/how-to-analyze-deeply-linked-objects-in-eclipse-mat
+
+Change -Xms to 5g
+/Applications/mat.app/Contents/Eclipse/MemoryAnalyzer.ini
+on Mac /Applications/mat.app/Contents/MacOS/MemoryAnalyzer -vm /Users/rmanjrek/jdk-16.0.2/jdk-16.0.2.jdk/Contents/Home/bin/
+
+Steps:
+$ /data/tmp/test/mat/mat/ParseHeapDump.sh  /data/tmp/queryengine-d4c59fb6b-f8wm2.heapdump
+Task: Parsing queryengine-d4c59fb6b-f8wm2.heapdump
+[Task: Parsing /data/tmp/queryengine-d4c59fb6b-f8wm2.heapdump
+[
+Subtask: Scanning /data/tmp/queryengine-d4c59fb6b-f8wm2.heapdump
+[
+[INFO] Detected compressed references, because with uncompressed 64-bit references the array at 0x460b630b8 would overlap the array at 0x460b630a0
+[....................
+[INFO] Wrote threads call stacks to /data/tmp/queryengine-d4c59fb6b-f8wm2.threads
+[....................
+[INFO] Heap /data/tmp/queryengine-d4c59fb6b-f8wm2.heapdump contains 375,084,585 objects
+[....................
+Subtask: Extracting objects from /data/tmp/queryengine-d4c59fb6b-f8wm2.heapdump
+[................................................................................Task: Removing unreachable objects
+[
+Subtask: Searching for unreachable objects
+[
+Subtask: Marking reachable objects
+[.
+Subtask: Re-indexing objects
+[.
+[INFO] Removed 30,355 unreachable objects using 1,815,720 bytes
+[..
+Subtask: Re-indexing classes
+[...
+Subtask: Writing /data/tmp/queryengine-d4c59fb6b-f8wm2.idx.index
+[....
+Subtask: Writing /data/tmp/queryengine-d4c59fb6b-f8wm2.o2c.index
+[.....
+Subtask: Writing /data/tmp/queryengine-d4c59fb6b-f8wm2.a2s.index
+[......
+Subtask: Re-indexing outbound index
+[.......
+Subtask: Writing /data/tmp/queryengine-d4c59fb6b-f8wm2.inbound.index
+[........
+Subtask: Writing /data/tmp/queryengine-d4c59fb6b-f8wm2.outbound.index
+[.........
+Subtask: Writing /data/tmp/queryengine-d4c59fb6b-f8wm2.o2hprof.index
+[.........Task: Calculating Dominator Tree
+[
+Subtask: Dominator Tree calculation
+[
+Subtask: Depth-first search
+[....................
+Subtask: Computing dominators
+[..............................................
+Subtask: Calculate retained sizes
+[............................................................
+Subtask: Create dominators index file
+[................................................................................]
+
+
+Query Language:
+https://programmerall.com/article/3978611521/
+https://titanwolf.org/Network/Articles/Article?AID=b94b816a-d147-4edb-9221-7eaa85f7e479
+
+SELECT OBJECTS c FROM INSTANCEOF java.lang.Class c WHERE c.@displayName.contains("class org.apache.commons.logging.impl.Jdk14Logger ")
+SELECT OBJECTS c FROM INSTANCEOF java.lang.Class c WHERE c.@displayName.contains("class com.cisco.ndp.queryengine.services.GraphService")
+SELECT OBJECTS c FROM INSTANCEOF java.lang.Class c WHERE c.@displayName.contains("class com.cisco.ndp.queryengine.types.GraphQuery")
+SELECT toString(s) FROM java.lang.String s WHERE (toString(s) LIKE "g.V().*")
+SELECT toString(s) FROM java.lang.String s WHERE (toString(s) LIKE ".*com.cisco.maglev.sdk.aa.SecurityFilter.*")
+
+=============================
+Cmd:_shell -c 'sudo magctl ssh shell bash'
+===========================
+SAR
+https://community.hpe.com/t5/System-Administration/quot-sar-d-quot-devices-how-to-map-to-dev-sdNNN-devices/td-p/4649777#.YNz2kBNKirw
+https://www.computerhope.com/unix/usar.htm
+/etc/default/sysstat
+systemctl enable sysstat
+#systemctl restart sysstat.service
+df -h -- to get ndp drive
+sar -d -s 10:00:00 -e 15:00:00 | grep sde
+sar -dp -f /var/log/sysstat/sa23 | grep sde
+sar -dp -s 1624862791939 -e 1624876310307
+sar -dp -f /var/log/sysstat/sa28
+
+sed  -i '' -e  's/^/2021\-07\-24 /g' sa24
+
+sed  -i '' 's/nextmodificationtime\"\: 9223372036854776000/nextmodificationtime\"\: 9223372006854776000/g' data.json
+
+man sar | grep -B 15  -A 12 aqu-sz
+DEV       tps     rkB/s     wkB/s   areq-sz    aqu-sz     await     svctm     %util
+tps rkB/s wkB/s areq-sz aqu-sz await %util
+tps
+Total number of transfers per second that were issued to physical devices.  A transfer is an I/O request to a physical device. Multiple logical requests can be combined into a single I/O request to the device.  A transfer is of indeterminate size.
+
+rkB/s
+Number of kilobytes read from the device per second.
+
+wkB/s
+Number of kilobytes written to the device per second.
+
+areq-sz
+The average size (in kilobytes) of the I/O requests that were issued to the device.
+Note: In previous versions, this field was known as avgrq-sz and was expressed in sectors.
+
+aqu-sz
+The average queue length of the requests that were issued to the device.
+Note: In previous versions, this field was known as avgqu-sz.
+
+await
+The average time (in milliseconds) for I/O requests issued to the device to be served. This includes the time spent by the requests in queue and the time spent servicing them.
+
+svctm
+The average service time (in milliseconds) for I/O requests that were issued to the device. Warning! Do not trust this field any more. This field will be removed in a future sysstat version.
+
+%util
+Percentage  of  elapsed  time during which I/O requests were issued to the device (bandwidth utilization for the device). Device saturation occurs when this value is close to 100% for devices serving requests serially. But for devices serving requests in
+parallel, such as RAID arrays and modern SSDs, this number does not reflect their performance limits.
+
+=============
+date -d "2021-07-15T05:45:01Z" +%s%N
+
+============
+iterm2 
+clear buffer: CMD + k
+
+===========
+jps -- get the pid of Maglevserver 
+jmap -histo:live <pid given by >
+
+
+====
+Proxy:
+sudo touch /etc/apt/apt.conf.d/proxy.conf
+sudo vi /etc/apt/apt.conf.d/proxy.conf
+
+Acquire::HTTP::proxy "http://proxy-wsa.esl.cisco.com:80";
+Acquire::HTTPS::proxy "http://proxy-wsa.esl.cisco.com:80";
+
+
+=============
+Java:
+https://stuefe.de/posts/metaspace/analyze-metaspace-with-jcmd/
+https://www.linkedin.com/pulse/static-variables-methods-java-where-jvm-stores-them-kotlin-malisciuc
+jcmd <java-pid-obtained-using-jps> VM.metaspace    —> to be run within QE pod
+jps | grep -i MaglevServer   —> This will provide PID for QE within QE pod
+
+
+https://blog.gceasy.io/2015/08/28/jhat-heap-dump-analysis/
+=============
+deleting long list of files from folder logs/
+sudo mkdir empty_dir
+sudo rsync -a --delete empty_dir/    logs/
+============
+Chrome developer's tool Filter on Network
+/\bautocomplete|lookup\b/
+
+==============
